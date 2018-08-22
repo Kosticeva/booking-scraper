@@ -1,0 +1,10 @@
+siteUrl: 'https://www.hotwire.com/'
+relevantData:
+  searchInputField: '...'
+  checkInInputField: '...'
+  checkOutInputField: '...'
+  roomsField: '...'
+  personsField: '...'
+  toggleSearch: '...'
+  resultLinkContainer: '...'
+  priceContainer: '...'

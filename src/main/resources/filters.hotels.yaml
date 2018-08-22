@@ -1,0 +1,135 @@
+amenityFilters:
+- filterName: "Wi-Fi"
+  filterSite: HOTELS
+  filterParam: "f-amid"
+  filterValue: "527"
+- filterName: "Pool"
+  filterSite: HOTELS
+  filterParam: "f-amid"
+  filterValue: "128"
+- filterName: "Breakfast included"
+  filterSite: HOTELS
+  filterParam: "f-amid"
+  filterValue: "2048"
+- filterName: "Airport shuttle"
+  filterSite: HOTELS
+  filterParam: "f-amid"
+  filterValue: "513"
+- filterName: "Parking"
+  filterSite: HOTELS
+  filterParam: "f-amid"
+  filterValue: "134234112"
+- filterName: "Kitchen"
+  filterSite: HOTELS
+  filterParam: "f-amid"
+  filterValue: "32"
+- filterName: "Pet friendly"
+  filterSite: HOTELS
+  filterParam: "f-amid"
+  filterValue: "64"
+- filterName: "Accessible for disabled"
+  filterSite: HOTELS
+  filterParam: "f-amid"
+  filterValue: "131072,1048576,262144"
+
+paymentFilters:
+- filterName: "Free cancellation"
+  filterSite: HOTELS
+  filterParam: "f-pay-pref"
+  filterValue: "fc"
+
+typeFilters:
+- filterName: "Hotel"
+  filterSite: HOTELS
+  filterParam: "f-accid"
+  filterValue: "1"
+- filterName: "Apartment"
+  filterSite: HOTELS
+  filterParam: "f-accid"
+  filterValue: "15"
+- filterName: "Hostel"
+  filterSite: HOTELS
+  filterParam: "f-accid"
+  filterValue: "12"
+- filterName: "Bed & Breakfast"
+  filterSite: HOTELS
+  filterParam: "f-accid"
+  filterValue: "5"
+- filterName: "Guest House"
+  filterSite: HOTELS
+  filterParam: "f-accid"
+  filterValue: "30"
+- filterName: "Vacation Home"
+  filterSite: HOTELS
+  filterParam: "f-accid"
+  filterValue: "4"
+- filterName: "Motel"
+  filterSite: HOTELS
+  filterParam: "f-accid"
+  filterValue: "7"
+
+starFilters:
+- filterName: "5*"
+  filterSite: HOTELS
+  filterParam: "f-star-rating"
+  filterValue: "5"
+- filterName: "4*"
+  filterSite: HOTELS
+  filterParam: "f-star-rating"
+  filterValue: "4"
+- filterName: "3*"
+  filterSite: HOTELS
+  filterParam: "f-star-rating"
+  filterValue: "3"
+- filterName: "2*"
+  filterSite: HOTELS
+  filterParam: "f-star-rating"
+  filterValue: "2"
+- filterName: "1*"
+  filterSite: HOTELS
+  filterParam: "f-star-rating"
+  filterValue: "1"
+- filterName: "0*"
+  filterSite: HOTELS
+  filterParam: "f-star-rating"
+  filterValue: "0"
+
+ratingFilters:
+- filterName: "9+(4.5+)"
+  filterSite: HOTELS
+  filterParam: "f-guest-rating-min"
+  filterValue: "9"
+- filterName: "8+(4+)"
+  filterSite: HOTELS
+  filterParam: "f-guest-rating-min"
+  filterValue: "8"
+- filterName: "7+(3.5+)"
+  filterSite: HOTELS
+  filterParam: "f-guest-rating-min"
+  filterValue: "7"
+- filterName: "6+(3+)"
+  filterSite: HOTELS
+  filterParam: "f-guest-rating-min"
+  filterValue: "6"
+
+priceFilters:
+- filterName: "0$-75$"
+  filterSite: HOTELS
+  filterParam: "f-price-min=0&f-price-max"
+  filterValue: "75"
+- filterName: "57$-124$"
+  filterSite: HOTELS
+  filterParam: "f-price-min=57&f-price-max"
+  filterValue: "124"
+- filterName: "110$-199$"
+  filterSite: HOTELS
+  filterParam: "f-price-min=110&f-price-max"
+  filterValue: "199"
+- filterName: "110$-230$"
+  filterSite: HOTELS
+  filterParam: "f-price-min=110&f-price-max"
+  filterValue: "230"
+- filterName: "200$+"
+  filterSite: HOTELS
+  filterParam: "f-price-min"
+  filterValue: "200"

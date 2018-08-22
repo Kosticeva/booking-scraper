@@ -1,0 +1,10 @@
+siteUrl: 'https://www.booking.com/'
+relevantData:
+  searchInputField: '//input[@id="ss"]'
+  checkInInputField: ''
+  checkOutInputField: '...'
+  roomsField: '...'
+  personsField: '...'
+  toggleSearch: '//button[@class="sb-searchbox__button  "]'
+  resultLinkContainer: '...'
+  priceContainer: '...'

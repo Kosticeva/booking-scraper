@@ -1,0 +1,148 @@
+Filter              Sajt            Parametar           Id
+
+AMENITY
+
+Wi Fi               Expedia         amenities           19
+Wi Fi               Hotels          f-amid              527
+Wi Fi               Booking         data-id             hotelfacility-107
+
+Klima               Expedia         amenities           27
+Klima               Hotels          ne postoji
+Klima               Booking         data-id             roomfacility-800011
+
+Bazen               Expedia         amenities           7
+Bazen               Hotels          f-amid              128
+Bazen               Booking         data-id             hotelfacility-301
+
+Dorucak uklj        Expedia         amenities           16
+Dorucak uklj        Hotels          f-amid              2048
+Dorucak uklj        Booking         data-id             mealplan-1
+
+PrevozAero          Expedia         amenities           66
+PrevozAero          Hotels          f-amid              513
+PrevozAero          Booking         data-id             hotelfacility-17
+
+BesplatanPark       Expedia         amenities           14
+BesplatanPark       Hotels          f-amid              134234112
+BesplatanPark       Booking         data-id             hotelfacility-2
+
+Kuhinja             Expedia         amenities           2158
+Kuhinja             Hotels          f-amid              32
+Kuhinja             Booking         data-id             roomfacility-8000999
+
+PetFrendli          Expedia         amenities           17
+PetFrendli          Hotels          f-amid              64
+PetFrendli          Booking         data-id             hotelfacility-4
+
+InvDostupno         Expedia         amenities           58,62,63
+InvDostupno         Hotels          f-amid              131072,1048576,262144
+InvDostupno         Booking         data-id             accessible_room_facilities-8000153,accessible_room_facilities-8000134,accessible_room_facilities-8000149,accessible_room_facilities-8000152,accessible_room_facilities-8000151
+
+PAYMENT
+
+BesplOtkazivanje    Expedia         cancellable         true
+BesplOtkazivanje    Hotels          f-pay-pref          fc
+BesplOtkazivanje    Booking         data-id             fc-2
+
+TYPE
+
+Hotel               Expedia         lodging             hotel
+Hotel               Hotels          f-accid             1
+Hotel               Booking         data-id             ht_id-204
+
+Apartman            Expedia         lodging             apartment
+Apartman            Hotels          f-accid             15
+Apartman            Booking         data-id             ht_id-201
+
+Hostel              Expedia         lodging             hostel
+Hostel              Hotels          f-accid             12
+Hostel              Booking         data-id             ht_id-203
+
+B&B                 Expedia         lodging             bedBreakfast
+B&B                 Hotels          f-accid             5
+B&B                 Booking         data-id             ht_id-208
+
+Guesthouse          Expedia         lodging             guestHouse
+Guesthouse          Hotels          f-accid             30
+Guesthouse          Booking         data-id             ht_id-216
+
+VacationHome/Condo  Expedia         lodging             vacationHome,condo
+VacationHome/Condo  Hotels          f-accid             4
+VacationHome/Condo  Booking         data-id             ht_id-220
+
+Motel               Expedia         lodging             motel
+Motel               Hotels          f-accid             7
+Motel               Booking         data-id             ht_id-205
+
+STAR
+
+5*                  Expedia         star                50
+5*                  Hotels          f-star-rating       5
+5*                  Booking         data-id             class-5
+
+4*                  Expedia         star                40
+4*                  Hotels          f-star-rating       4
+4*                  Booking         data-id             class-4
+
+3*                  Expedia         star                30
+3*                  Hotels          f-star-rating       3
+3*                  Booking         data-id             class-3
+
+2*                  Expedia         star                20
+2*                  Hotels          f-star-rating       2
+2*                  Booking         data-id             class-2
+
+1*                  Expedia         star                10
+1*                  Hotels          f-star-rating       1
+1*                  Booking         data-id             class-1
+
+0*                  Expedia         star                0
+0*                  Hotels          f-star-rating       0
+0*                  Booking         data-id             class-0
+
+RATING
+
+9/4.5               Expedia         guestRating          4.5
+9/4.5               Hotels          f-guest-rating-min   9
+9/4.5               Booking         data-id              review_score-90
+
+8/4                 Expedia         guestRating          4
+8/4                 Hotels          f-guest-rating-min   8
+8/4                 Booking         data-id              review_score-80
+
+7/3.5               Expedia         guestRating          3.5
+7/3.5               Hotels          f-guest-rating-min   7
+7/3.5               Booking         data-id              review_score-70
+
+6/3                 Expedia         guestRating          3
+6/3                 Hotels          f-guest-rating-min   6
+6/3                 Booking         data-id              review_score-60
+
+PRICE
+
+0-75                Expedia         price                0
+0-75                Hotels          f-price-min          0
+                                    f-price-max          75
+0-75                Booking         data-id              pri-1
+
+57-124              Expedia         price                1
+57-124              Hotels          f-price-min          57
+                                    f-price-max          124
+57-124              Booking         data-id              pri-2
+
+110-199             Expedia         price                2
+110-199             Hotels          f-price-min          110
+                                    f-price-max          199
+110-199             Booking         data-id              pri-3
+
+110-230             Expedia         price                2
+110-230             Hotels          f-price-min          110
+                                    f-price-max          230
+110-230             Booking         data-id              pri-4
+
+200+                Expedia         price                3
+200+                Hotels          f-price-min          200
+200+                Booking         data-id              pri-5
+
+
+
