@@ -21,6 +21,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+//izvlacim po 20 koristljivih rezultata
+//sacuvam do kod linka sam stala na stranici i na kojoj stranici
+
 public class BookingSiteImpl implements Site {
 
     @Override
