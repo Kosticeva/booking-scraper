@@ -1,0 +1,40 @@
+<div class="container-fluid">
+  <div class="row" *ngFor="let result of results">
+    <div class="col-12 card">
+      <div class="card-header d-flex justify-content-between">
+        <a href="{{result.resultLink}}">{{result.resultTitle}}</a>
+      </div>
+      <div class="card-body">
+        <div class="container">
+          <div class="row">
+            <div class="col-7">
+              <div>
+                Stars: {{result.resultCategory}}
+              </div>
+              <div>
+                Rating: {{result.resultRating}}
+              </div>
+              <div>
+                <strong>Cheapest price is: ${{result.resultPrice}}</strong>
+              </div>
+            </div>
+            <div class="col-5">
+              <table>
+                <tbody>
+                  <tr *ngFor="let offer of result.offers">
+                    <td>
+                      <a href="{{offer.link}}">{{offer.site}}</a>
+                    </td>
+                    <td>
+                      ${{offer.price}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
