@@ -1,6 +1,6 @@
 package com.ftn.uns.scraper.site.implementation;
 
-import com.ftn.uns.scraper.query.Result;
+import com.ftn.uns.scraper.result.Result;
 import com.ftn.uns.scraper.query.model.Dates;
 import com.ftn.uns.scraper.query.model.Location;
 import com.ftn.uns.scraper.query.model.Room;
@@ -100,36 +100,54 @@ public class TravelocitySiteImpl implements Site{
             //
         }
 
-        String RESULTLINK_XPATH = "//a[@class='flex-link' and starts-with(@href,'https:')]";
-        String RESULTFULLPRICE_XPATH = "//li[@class='total-price-on-card']";
-        String RESULTPRICE_XPATH = "//li[@class='price-breakdown-tooltip price ']";
-        String RESULTTITLE_XPATH = "//h4[@class='hotelName fakeLink']";
+        String parentTag = "//div[@class='flex-link-wrap']";
+        String RESULTLINK_XPATH = ".//a[@class='flex-link' and starts-with(@href,'https:')]";
+        String RESULTFULLPRICE_XPATH = ".//li[@class='total-price-on-card']";
+        String RESULTPRICE_XPATH = ".//li[@class='price-breakdown-tooltip price ']";
+        String RESULTTITLE_XPATH = ".//h4[@class='hotelName fakeLink']";
+        String RESULTCAT_XPATH = ".//li[@class='starRating secondary']";
+        String RESULTRATING_XPATH = ".//li[@class='reviewOverall']/span[@aria-hidden='true']";
 
-        List<HtmlAnchor> links = page.getByXPath(RESULTLINK_XPATH);
-        List<HtmlElement> priceContainers = page.getByXPath(RESULTFULLPRICE_XPATH);
-        List<HtmlElement> titles = page.getByXPath(RESULTTITLE_XPATH);
+        List<HtmlElement> tags = page.getByXPath(parentTag);
         List<Result> results = new ArrayList<>();
 
-        if(links.size() == priceContainers.size()) {
-            for (HtmlAnchor anchor : links) {
-                Result result = new Result();
-                result.setResultLink(anchor.getHrefAttribute());
-                result.setResultPrice(extractPrice(priceContainers.get(links.indexOf(anchor)).getTextContent()));
-                result.setResultTitle(titles.get(links.indexOf(anchor)).getTextContent());
-                results.add(result);
-            }
-        }else{
-            priceContainers = page.getByXPath(RESULTPRICE_XPATH);
+        for(HtmlElement tag: tags){
+            List<HtmlAnchor> links = tag.getByXPath(RESULTLINK_XPATH);
+            List<HtmlElement> priceContainers = tag.getByXPath(RESULTFULLPRICE_XPATH);
+            List<HtmlElement> titles = tag.getByXPath(RESULTTITLE_XPATH);
+            List<HtmlElement> ratings = tag.getByXPath(RESULTRATING_XPATH);
+            List<HtmlElement> categories = tag.getByXPath(RESULTCAT_XPATH);
 
-            if(links.size() == priceContainers.size()){
-                for (HtmlAnchor anchor : links) {
-                    Result result = new Result();
-                    result.setResultLink(anchor.getHrefAttribute());
-                    Double calculatedPrice = extractPrice(priceContainers.get(links.indexOf(anchor)).getTextContent());
-                    result.setResultPrice(calculatePrice(page.getBaseURL().toString(), calculatedPrice));
-                    result.setResultTitle(titles.get(links.indexOf(anchor)).getTextContent());
-                    results.add(result);
+            if(links.size() > 0){
+                Result result = new Result();
+                result.setResultLink(links.get(0).getHrefAttribute());
+                result.setResultTitle(titles.get(0).getTextContent());
+                result.setOffers(new ArrayList<>());
+
+                if(priceContainers.size() > 0){
+                    result.setResultPrice(extractPrice(priceContainers.get(0).getTextContent()));
+                }else{
+                    priceContainers = tag.getByXPath(RESULTPRICE_XPATH);
+                    if(priceContainers.size() > 0){
+                        Double calculatedPrice = extractPrice(priceContainers.get(0).getTextContent());
+                        result.setResultPrice(calculatePrice(page.getBaseURL().toString(), calculatedPrice));
+                    }else{
+                        continue;
+                    }
                 }
+
+                if(categories.size() > 0){
+                    result.setResultCategory(extractStars(categories.get(0).asText()));
+                }else{
+                    result.setResultCategory(0.0);
+                }
+
+                if(ratings.size() > 0) {
+                    result.setResultRating(extractRating(ratings.get(0).asText()));
+                }else{
+                    result.setResultRating(0.0);
+                }
+                results.add(result);
             }
         }
 
@@ -145,6 +163,14 @@ public class TravelocitySiteImpl implements Site{
         } catch (ParseException e) {
             return 0.0;
         }
+    }
+
+    private Double extractStars(String stars){
+        return Double.parseDouble(stars.substring(0, stars.indexOf(" out of")));
+    }
+
+    private Double extractRating(String rating){
+        return Double.parseDouble(rating.substring(0, rating.indexOf("/")));
     }
 
     private Double calculatePrice(String pageUrl, Double nightlyPrice){

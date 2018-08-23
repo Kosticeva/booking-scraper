@@ -1,19 +1,15 @@
 package com.ftn.uns.scraper;
 
-import com.ftn.uns.scraper.query.Result;
+import com.ftn.uns.scraper.result.Result;
 import com.ftn.uns.scraper.query.model.Dates;
 import com.ftn.uns.scraper.query.model.Location;
 import com.ftn.uns.scraper.query.model.Room;
 import com.ftn.uns.scraper.query.model.SearchQuery;
+import com.ftn.uns.scraper.service.PriceCompareService;
 import com.ftn.uns.scraper.site.Site;
 import com.ftn.uns.scraper.site.SiteFactory;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import lombok.Cleanup;
-import okio.Buffer;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -78,6 +74,9 @@ public class ScraperApplicationTests {
             HtmlPage result = site.getResultPage(searchQuery, query.getFilters());
             results.addAll((Collection<? extends Result>)site.scrapePage(result));
         }
+
+        PriceCompareService comparator = new PriceCompareService();
+        results = comparator.scrapeHotels(results, new ArrayList<>());
 
         BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/result.txt")));
         for(Result result: results){

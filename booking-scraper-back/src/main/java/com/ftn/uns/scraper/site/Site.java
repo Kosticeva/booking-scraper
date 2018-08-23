@@ -1,6 +1,6 @@
 package com.ftn.uns.scraper.site;
 
-import com.ftn.uns.scraper.query.Result;
+import com.ftn.uns.scraper.result.Result;
 import com.ftn.uns.scraper.query.model.Dates;
 import com.ftn.uns.scraper.query.model.Location;
 import com.ftn.uns.scraper.query.model.Room;

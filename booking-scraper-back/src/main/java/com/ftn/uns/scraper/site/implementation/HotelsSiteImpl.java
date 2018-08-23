@@ -1,11 +1,11 @@
 package com.ftn.uns.scraper.site.implementation;
 
-import com.ftn.uns.scraper.query.Result;
+import com.ftn.uns.scraper.result.Result;
 import com.ftn.uns.scraper.query.model.Dates;
 import com.ftn.uns.scraper.query.model.Filter;
 import com.ftn.uns.scraper.query.model.Location;
 import com.ftn.uns.scraper.query.model.Room;
-import com.ftn.uns.scraper.service.FilterMatcher;
+import com.ftn.uns.scraper.service.filter.FilterMatcher;
 import com.ftn.uns.scraper.site.Site;
 import com.ftn.uns.scraper.site.SiteFactory;
 import com.ftn.uns.scraper.site.SiteType;
@@ -13,7 +13,6 @@ import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import lombok.Cleanup;
-import okio.Buffer;
 
 import java.io.*;
 import java.net.URLEncoder;
@@ -121,6 +120,9 @@ public class HotelsSiteImpl implements Site {
 
         String RESULTLINK_XPATH = "//li[@class='hotel' or @class='hotel sponsored']";
         String RESULTPRICE_XPATH = ".//div[@class='price']/a";
+        String RESULTRATING_XPATH = "//div[starts-with(@class,'review-container review-module ')]//span[starts-with(@class,'rating ')]";
+        String RESULTCAT_XPATH = "//span[starts-with(@class,'star-rating-text')]";
+
         List<Result> results = new ArrayList<>();
 
         List<HtmlElement> tags = page.getByXPath(RESULTLINK_XPATH);
@@ -134,9 +136,16 @@ public class HotelsSiteImpl implements Site {
 
             try {
                 HtmlPage hotelPage = SiteFactory.getClient().getPage("https://www.hotels.com"+anchors.get(0).getHrefAttribute());
+
                 List<HtmlElement> priceTables = hotelPage.getByXPath("//div[@class='widget-tooltip-bd']");
                 List<HtmlElement> price = priceTables.get(0).getByXPath(".//td");
+                List<HtmlElement> ratings = hotelPage.getByXPath(RESULTRATING_XPATH);
+                List<HtmlElement> categories = hotelPage.getByXPath(RESULTCAT_XPATH);
+
                 result.setResultPrice(extractPrice(price.get(price.size() - 1).asText()));
+                result.setOffers(new ArrayList<>());
+                result.setResultRating(Double.parseDouble(ratings.get(0).asText()));
+                result.setResultCategory(Double.parseDouble(categories.get(0).asText().substring(0, categories.get(0).asText().indexOf("-"))));
 
                 results.add(result);
             }catch (IOException e){

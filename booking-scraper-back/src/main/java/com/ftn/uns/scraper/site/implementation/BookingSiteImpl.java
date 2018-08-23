@@ -1,14 +1,16 @@
 package com.ftn.uns.scraper.site.implementation;
 
-import com.ftn.uns.scraper.query.Result;
+import com.ftn.uns.scraper.result.Result;
 import com.ftn.uns.scraper.query.model.Dates;
 import com.ftn.uns.scraper.query.model.Filter;
 import com.ftn.uns.scraper.query.model.Location;
 import com.ftn.uns.scraper.query.model.Room;
-import com.ftn.uns.scraper.service.FilterMatcher;
+import com.ftn.uns.scraper.service.filter.FilterMatcher;
 import com.ftn.uns.scraper.site.Site;
 import com.ftn.uns.scraper.site.SiteFactory;
 import com.ftn.uns.scraper.site.SiteType;
+import com.gargoylesoftware.htmlunit.Page;
+import com.gargoylesoftware.htmlunit.TextPage;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
@@ -20,9 +22,6 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-
-//izvlacim po 20 koristljivih rezultata
-//sacuvam do kod linka sam stala na stranici i na kojoj stranici
 
 public class BookingSiteImpl implements Site {
 
@@ -112,6 +111,8 @@ public class BookingSiteImpl implements Site {
         String RESULTLINK_XPATH = ".//a[@class='hotel_name_link url']";
         String RESULTPRICE_XPATH = ".//div[@class[contains(., 'entire_row_clickable')]]";
         String RESULTTITLE_XPATH = ".//span[@class[contains(., 'sr-hotel__name')]]";
+        String RESULTRATING_XPATH = ".//span[@class='review-score-badge']";
+        String RESULTCAT_XPATH = ".//i[@class='\nbk-icon-wrapper\nbk-icon-stars\nstar_track\n']/span";
 
         List<HtmlElement> tags = page.getByXPath(parentTag);
         List<Result> results = new ArrayList<>();
@@ -121,17 +122,38 @@ public class BookingSiteImpl implements Site {
             List<HtmlAnchor> anchors = tag.getByXPath(RESULTLINK_XPATH);
             List<HtmlElement> prices = tag.getByXPath(RESULTPRICE_XPATH);
             List<HtmlElement> titles = tag.getByXPath(RESULTTITLE_XPATH);
+            List<HtmlElement> ratings = tag.getByXPath(RESULTRATING_XPATH);
+            List<HtmlElement> categories = tag.getByXPath(RESULTCAT_XPATH);
 
-            if(prices.size() > 0){
-                Result result = new Result();
-                result.setResultLink("https://www.booking.com/" + anchors.get(0).getHrefAttribute());
-                result.setResultPrice(extractPrice(prices.get(0).asText()));
-                result.setResultTitle(titles.get(0).asText());
-                results.add(result);
+            try {
+                if (prices.size() > 0) {
+                    Result result = new Result();
+                    result.setResultLink("https://www.booking.com" + anchors.get(0).getHrefAttribute());
+                    result.setResultPrice(extractPrice(prices.get(0).asText()));
+                    result.setResultTitle(titles.get(0).asText());
+                    result.setResultRating(Double.parseDouble(ratings.get(0).asText()));
+                    if (categories.size() > 0) {
+                        result.setResultCategory(extractStars(categories.get(0).asText()));
+                    } else {
+                        result.setResultCategory(0.0);
+                    }
+                    result.setOffers(new ArrayList<>());
+                    results.add(result);
+                }
+            }catch(Exception e){
+                try {
+                    @Cleanup BufferedWriter writer = new BufferedWriter(new FileWriter(new File("log.txt")));
+                    writer.write(e.getMessage());
+                }catch (Exception ee){
+                }
             }
         }
 
         return results;
+    }
+
+    private Double extractStars(String stars){
+        return Double.parseDouble(stars.substring(0, stars.indexOf(" stars")));
     }
 
     @Override
@@ -153,6 +175,11 @@ public class BookingSiteImpl implements Site {
                     "label=gen173nr-1FCAEoggJCAlhYSDNYBGjBAYgBAZgBMcIBCndpbmRvd3MgMTDIAQzYAQHoAQH4AQKSAgF5qAID;" +
                     "sid=a20d9f4619c3d0f15a64593f9c932e97;sb_price_type=total&;selected_currency=USD;" +
                     "changed_currency=1;top_currency=1");
+            Page page =  SiteFactory.getClient().getPage(searchUrl);
+            if(!page.isHtmlPage()){
+                @Cleanup BufferedWriter writer = new BufferedWriter(new FileWriter(new File("nekogovno.html")));
+                writer.write(((TextPage)page).getContent());
+            }
             return doFilters(filters, SiteFactory.getClient().getPage(searchUrl));
         }catch (IOException e) {
             return null;

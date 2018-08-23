@@ -1,9 +1,10 @@
 package com.ftn.uns.scraper.service;
 
-import com.ftn.uns.scraper.query.Result;
+import com.ftn.uns.scraper.result.Result;
 import com.ftn.uns.scraper.query.model.SearchQuery;
 import com.ftn.uns.scraper.site.Site;
 import com.ftn.uns.scraper.site.SiteFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -13,6 +14,9 @@ import java.util.List;
 
 @Service
 public class SearchService {
+
+    @Autowired
+    PriceCompareService comparator;
 
     public List<Result> getResults(SearchQuery query){
 
@@ -29,6 +33,7 @@ public class SearchService {
                     site.createChildrenParameter(query.getRooms())), query.getFilters())));
         }
 
+        results = comparator.scrapeHotels(results, new ArrayList<>());
         return results;
     }
 }
