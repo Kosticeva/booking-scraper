@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Result } from '../../model/result';
 
 @Component({
@@ -13,15 +13,15 @@ export class ResultListComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.results = [];
 
+    this.results = [];
     this.results.push(
       {
         resultLink: "www.google.com",
         resultTitle: "Google",
         resultPrice: 1412.41,
-        resultCategory: 5,
-        resultRating: 4,
+        resultCategory: 2,
+        resultRating: 9,
         offers: [
           {
             price: 312,
@@ -41,6 +41,11 @@ export class ResultListComponent implements OnInit {
           {
             price: 3415,
             site: "Travelocity",
+            link: "www.travelocity.com"
+          },
+          {
+            price: 34145,
+            site: "Booking",
             link: "www.travelocity.com"
           }
         ]

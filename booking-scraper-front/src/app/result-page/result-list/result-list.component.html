@@ -1,32 +1,51 @@
 <div class="container-fluid">
+  <div class="row mt-2 mb-1">
+    <h4>Showing {{results.length}} results</h4>
+  </div>
   <div class="row" *ngFor="let result of results">
     <div class="col-12 card">
-      <div class="card-header d-flex justify-content-between">
-        <a href="{{result.resultLink}}">{{result.resultTitle}}</a>
+      <div class="filter-bg p-2 d-flex justify-content-between">
+        <h3><a class="custom-theme" href="{{result.resultLink}}">{{result.resultTitle}}</a></h3>
       </div>
       <div class="card-body">
         <div class="container">
           <div class="row">
             <div class="col-7">
               <div>
-                Stars: {{result.resultCategory}}
+                Stars: 
+                <i *ngIf="result.resultCategory >= 1" class="fa fa-star text-warning"></i>
+                <i *ngIf="result.resultCategory >= 2" class="fa fa-star text-warning"></i>
+                <i *ngIf="result.resultCategory >= 3" class="fa fa-star text-warning"></i>
+                <i *ngIf="result.resultCategory >= 4" class="fa fa-star text-warning"></i>
+                <i *ngIf="result.resultCategory == 5" class="fa fa-star text-warning"></i>
               </div>
               <div>
-                Rating: {{result.resultRating}}
+                Rating: <b [ngClass]="{'text-danger': result.resultRating<6 , 'text-warning': result.resultRating<8, 'text-success': result.resultRating>=8}">{{result.resultRating}} / 10</b>
               </div>
-              <div>
-                <strong>Cheapest price is: ${{result.resultPrice}}</strong>
+              <br />
+              <div class="d-flex justify-content-between">
+                <h2>Best offer:</h2>
+                <div class="d-flex justify-content-start">
+                  <h2><a class="custom-theme" href="{{result.resultLink}}" style="text-decoration: none">${{result.resultPrice}}</a></h2>
+                </div>
               </div>
             </div>
-            <div class="col-5">
+            <div class="col-5 d-flex justify-content-end">
               <table>
+                <thead>
+                  <b>Other offers</b>
+                </thead>
                 <tbody>
                   <tr *ngFor="let offer of result.offers">
                     <td>
-                      <a href="{{offer.link}}">{{offer.site}}</a>
+                      <img *ngIf="offer.site==='Expedia'" src="https://1843784937.rsc.cdn77.org/wp-content/uploads/2015/12/Expedia-Logo-EPS-vector-image.png" width="40" height="30"/>
+                      <img *ngIf="offer.site==='Booking'" src="https://botw-pd.s3.amazonaws.com/styles/logo-thumbnail/s3/072016/booking_logo.jpg?itok=RBex_H1u" width="40" height="30"/>
+                      <img *ngIf="offer.site==='Orbitz'" src="https://botw-pd.s3.amazonaws.com/styles/logo-thumbnail/s3/022011/orbitz-blues-version-converted.png?itok=8Ftvt9Vt" width="40" height="30"/>
+                      <img *ngIf="offer.site==='Travelocity'" src="https://botw-pd.s3.amazonaws.com/styles/logo-thumbnail/s3/0018/8808/brand.gif?itok=Z60LeCEm" width="40" height="30"/>
+                      <img *ngIf="offer.site==='Hotels'" src="https://www.asiamiles.com/content/dam/am-content/brand-v2/travel-pillar/logo-image/Hotels.com/hotels_logo_31012018.png" width="40" height="30"/>
                     </td>
                     <td>
-                      ${{offer.price}}
+                      <a class="custom-theme" href="{{offer.link}}">${{offer.price}}</a>
                     </td>
                   </tr>
                 </tbody>

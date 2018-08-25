@@ -9,6 +9,7 @@ import com.ftn.uns.scraper.service.filter.FilterMatcher;
 import com.ftn.uns.scraper.site.Site;
 import com.ftn.uns.scraper.site.SiteFactory;
 import com.ftn.uns.scraper.site.SiteType;
+import com.ftn.uns.scraper.site.model.PageModel;
 import com.gargoylesoftware.htmlunit.Page;
 import com.gargoylesoftware.htmlunit.TextPage;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
@@ -17,6 +18,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import lombok.Cleanup;
 
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URLEncoder;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -100,51 +102,66 @@ public class BookingSiteImpl implements Site {
 
     @Override
     public Iterable<Result> scrapePage(HtmlPage page) {
-        try {
-            @Cleanup BufferedWriter log = new BufferedWriter(new FileWriter(new File("src/main/resources/site-htmls/booking.html")));
-            log.write(page.asXml());
-        }catch (IOException io){
-            //
-        }
-
         String parentTag = "//div[@class='sr_item_content sr_item_content_slider_wrapper ']";
+        List<Result> results = new ArrayList<>();
+        /*int pageNum = 1;
+        int idxNum = 0;*/
+
+        List<HtmlElement> tags = page.getByXPath(parentTag);
+        results = collectResults(tags, results, 0);
+
+        /*PageModel model = new PageModel();
+        model.setLinkIndex(idxNum);
+        model.setPageNumber(pageNum);*/
+
+        /*try {
+            @Cleanup ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File("src/main/resources/searches/booking.dat")));
+            out.writeObject(model);
+        }catch (IOException e){}*/
+
+        return results;
+    }
+
+    private List<Result> collectResults(List<HtmlElement> tags, List<Result> results, int idx){
         String RESULTLINK_XPATH = ".//a[@class='hotel_name_link url']";
         String RESULTPRICE_XPATH = ".//div[@class[contains(., 'entire_row_clickable')]]";
         String RESULTTITLE_XPATH = ".//span[@class[contains(., 'sr-hotel__name')]]";
         String RESULTRATING_XPATH = ".//span[@class='review-score-badge']";
         String RESULTCAT_XPATH = ".//i[@class='\nbk-icon-wrapper\nbk-icon-stars\nstar_track\n']/span";
 
-        List<HtmlElement> tags = page.getByXPath(parentTag);
-        List<Result> results = new ArrayList<>();
-
         for(HtmlElement tag: tags){
-            System.out.println(tag.asXml());
-            List<HtmlAnchor> anchors = tag.getByXPath(RESULTLINK_XPATH);
-            List<HtmlElement> prices = tag.getByXPath(RESULTPRICE_XPATH);
-            List<HtmlElement> titles = tag.getByXPath(RESULTTITLE_XPATH);
-            List<HtmlElement> ratings = tag.getByXPath(RESULTRATING_XPATH);
-            List<HtmlElement> categories = tag.getByXPath(RESULTCAT_XPATH);
+            if(tags.indexOf(tag) >= (idx-1)) {
+                List<HtmlAnchor> anchors = tag.getByXPath(RESULTLINK_XPATH);
+                List<HtmlElement> prices = tag.getByXPath(RESULTPRICE_XPATH);
+                List<HtmlElement> titles = tag.getByXPath(RESULTTITLE_XPATH);
+                List<HtmlElement> ratings = tag.getByXPath(RESULTRATING_XPATH);
+                List<HtmlElement> categories = tag.getByXPath(RESULTCAT_XPATH);
 
-            try {
-                if (prices.size() > 0) {
-                    Result result = new Result();
-                    result.setResultLink("https://www.booking.com" + anchors.get(0).getHrefAttribute());
-                    result.setResultPrice(extractPrice(prices.get(0).asText()));
-                    result.setResultTitle(titles.get(0).asText());
-                    result.setResultRating(Double.parseDouble(ratings.get(0).asText()));
-                    if (categories.size() > 0) {
-                        result.setResultCategory(extractStars(categories.get(0).asText()));
-                    } else {
-                        result.setResultCategory(0.0);
-                    }
-                    result.setOffers(new ArrayList<>());
-                    results.add(result);
-                }
-            }catch(Exception e){
                 try {
-                    @Cleanup BufferedWriter writer = new BufferedWriter(new FileWriter(new File("log.txt")));
-                    writer.write(e.getMessage());
-                }catch (Exception ee){
+                    if (prices.size() > 0) {
+                        Result result = new Result();
+                        result.setResultLink("https://www.booking.com" + anchors.get(0).getHrefAttribute());
+                        result.setResultPrice(extractPrice(prices.get(0).asText()));
+                        result.setResultTitle(titles.get(0).asText());
+                        result.setResultRating(Double.parseDouble(ratings.get(0).asText()));
+                        if (categories.size() > 0) {
+                            result.setResultCategory(extractStars(categories.get(0).asText()));
+                        } else {
+                            result.setResultCategory(0.0);
+                        }
+                        result.setOffers(new ArrayList<>());
+                        results.add(result);
+
+                        if (results.size() == 50) {
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+                    try {
+                        @Cleanup BufferedWriter writer = new BufferedWriter(new FileWriter(new File("log.txt")));
+                        writer.write(e.getMessage());
+                    } catch (Exception ee) {
+                    }
                 }
             }
         }

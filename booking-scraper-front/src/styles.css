@@ -1,2 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
-@import '../node_modules/ngx-bootstrap/datepicker/bs-datepicker.css'
+@import '../node_modules/ngx-bootstrap/datepicker/bs-datepicker.css';
+@import "../node_modules/font-awesome/css/font-awesome.css";
+
+.custom-theme-bg{
+    background-color: #5cb85c;
+    color: white;
+}
+
+a.custom-theme, hr{
+    color: #306030;
+}
+
+hr{
+    height: 1rem;
+}
+
+.jumbotron, .filter-bg{
+    background-color: #EAFFDC;
+}
+
+body{
+    color: #306030;
+}

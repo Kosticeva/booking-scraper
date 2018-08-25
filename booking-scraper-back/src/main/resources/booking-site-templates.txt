@@ -24,6 +24,7 @@ rooms: q-rooms=roomCount
 paginacija:
     nema paginaciju, vec radi na skrolovanje
 
+
 https://www.orbitz.com/Hotel-Search?destination=Dublin%2C+Ireland&latLong=53.34402%2C-6.26146&regionId=178256&startDate=08%2F08%2F2018&endDate=08%2F09%2F2018&
 rooms=2&_xpid=11905%7C1&adults=1,1&children=1_5,1_10,2_12
 
@@ -34,6 +35,7 @@ rooms: rooms=roomCount
 adults: adults=room1Adults,room2Adults
 children: children=roomNum_age,roomNum_age,...
 
+
 https://www.hotwire.com/hotels/results/Dublin%2520(and%2520vicinity)%252C%2520Ireland/08-08-2018/08-09-2018/2/2/3
 
 location: thirdSlashFromRoot
@@ -43,6 +45,7 @@ rooms: 6th
 adults: 7th
 children: 8th
 
+
 https://www.travelocity.com/Hotel-Search?destination=Dublin%2C+Ireland&latLong=53.34402%2C-6.26146&regionId=178256&startDate=08%2F08%2F2018&endDate=08%2F09%2F2018&rooms=2&_xpid=11905%7C1&adults=1%2C1&children=1_5%2C1_0%2C2_13
 
 location: destination=locName
@@ -51,6 +54,7 @@ endDate: endDate=mm-dd-yyyy
 rooms: rooms=roomCount
 adults: adults=room1Adults,room2Adults
 children: children=roomNum_age,roomNum_age,...
+
 
 https://www.agoda.com/pages/agoda/default/DestinationSearchResult.aspx?asq=u2qcKLxwzRU5NDuxJ0kOF1FAlmcum%2Fr12svYYuVJOj5vinAl%2FH6Y7jHruhM6ueYtncbzTLOPBjT84OgAAKXmu4x92HCpRxs78zavyKc31gwv636%2BnKnEMgaiNgNdVgIhZUm%2B%2BKG64ejPrq8UNq2hHPaj2RFjPnThe1DYvdWMOJJtLd3PNpyf6ftBl5MCuYUPr2V3pJtP1PZRaBSub%2BDEOQ%3D%3D&
 city=1131&tick=636693737543&languageId=1&userId=e40e72f8-ae82-44d2-828a-e0cee2a0747b&pageTypeId=1&origin=RS&locale=en-US&cid=-1&aid=130243&currencyCode=EUR
@@ -63,6 +67,7 @@ endDate: checkOut=yyyy-mm-dd
 rooms: rooms=roomCount
 adults: adults=adultsCount
 children: children=childrenCount&childages=child1age,child2age,...
+
 
 https://www.booking.com/searchresults.html?label=gen173nr-1DCAEoggJCAlhYSDNYBGjBAYgBAZgBMcIBCndpbmRvd3MgMTDIAQzYAQPoAQH4AQKSAgF5qAID;sid=f3990d561d26e62f1aa00ce8e18281aa;age=0
 &age=13&age=3&checkin_month=8&checkin_monthday=8&checkin_year=2018&
@@ -78,4 +83,4 @@ adults: group_adults=adultsCount
 children: group_children=childrenCount&age=child1age&age=child2age
 
 paginacija:
-    &rows=addCount&offset=numberOfPage*addCount
+    uvek vrati po 15, offset kaze od kog rezultata treba

@@ -1,114 +1,126 @@
-<form class="container-fluid card-header">
+<form class="container-fluid filter-bg sticky-top">
+  <h4 class="pt-2 pb-1">Change your search</h4>
   <div class="row">
     <div class="col-12 input-group">
       <input class="form-control form-control-sm" type="text" placeholder="Destination..." name="destination" [(ngModel)]="searchQuery.location"/>
     </div>
   </div>
   <div class="row mt-2">
-    <div class="col-12 form-group">
-      <label class="form-control-label" for="check-in">Check In Date</label>
-      <input type="text" id="check-in" name="check-in"
-            class="form-control form-control-sm"
-            [minDate]="now"
-            [maxDate]="maxDate"
-            #dp="bsDatepicker"
-            bsDatepicker [(bsValue)]="searchQuery.dates.checkInDate">
-    </div>
-    <div class="col-12 form-group">
-        <label class="form-control-label form-label-sm" for="check-out">Check Out Date</label>
-        <input type="text" id="check-out" name="check-out"
+      <div class="col-12 form-group">
+        <label class="form-control-label" for="check-in">Check In Date</label>
+        <div class="input-group">
+            <input type="text" id="check-in" aria-describedby="cal-check-in" name="check-in"
               class="form-control form-control-sm"
               [minDate]="now"
               [maxDate]="maxDate"
               #dp="bsDatepicker"
-              bsDatepicker [(bsValue)]="searchQuery.dates.checkOutDate">
+              bsDatepicker [(bsValue)]="searchQuery.dates.checkInDate"/>
+            <span class="input-group-append" id="cal-check-in"><i class="fa fa-calendar input-group-text custom-theme-bg"></i></span>
+        </div>
+      </div>
+      <div class="col-12 form-group">
+          <label class="form-control-label" for="check-out">Check Out Date</label>
+          <div class="input-group">
+            <input type="text" id="check-out" aria-describedby="cal-check-out" name="check-out"
+                  class="form-control form-control-sm"
+                  [minDate]="now"
+                  [maxDate]="maxDate"
+                  #dp="bsDatepicker"
+                  bsDatepicker [(bsValue)]="searchQuery.dates.checkOutDate"/>
+            <span class="input-group-append" id="cal-check-out"><i class="fa fa-calendar input-group-text custom-theme-bg"></i></span>
+          </div>
+      </div>
     </div>
-  </div>
   <div class="row">
     <div class="col-12" *ngFor="let room of searchQuery.rooms; let i=index">
-      <div class="card">
-        <div class="card-title d-flex justify-content-between">
-          <h6>Room {{i+1}}</h6>
-          <a href="javascript:void(0)"(click)="deleteRoom(room)">X</a>
-        </div>
-        <div class="card-body">
+      <div class="card mb-1">
+        <div class="card-body p-1">
+          <div class="d-flex justify-content-between mb-1">
+            <h6><b>Room {{i+1}}</b></h6>
+            <a href="javascript:void(0)"(click)="deleteRoom(room)"class="custom-theme"><i class="fa fa-close"></i></a>
+          </div>
           <span class="d-flex justify-content-between">
-              <span class="w-75">Adults</span>
-              <select name="{{getName(i+1, 0)}}" [(ngModel)]="room.adultsInRoom">
+              <span class="w-100">Adults</span>
+              <select class="form-control form-control-sm p-0 w-50"  name="{{getName(i+1, 0)}}" [(ngModel)]="room.adultsInRoom">
                 <option *ngFor="let adult of adults" [ngValue]="adult">{{adult}}</option>
               </select>
           </span>
-          <div *ngFor="let child of room.childrenInRoom;let j=index">
-            <span>Child {{j+1}}</span>
-            <select name="{{getName(i+1,j+1)}}" [(ngModel)]="room.childrenInRoom[j]">
+          <div class="d-flex justify-content-between" *ngFor="let child of room.childrenInRoom;let j=index">
+            <span class="w-100">Child {{j+1}}</span>
+            <select class="form-control form-control-sm  p-0 w-50" name="{{getName(i+1,j+1)}}" [(ngModel)]="room.childrenInRoom[j]">
               <option *ngFor="let year of years" [ngValue]="year">{{year}}</option>
             </select>
           </div>
+          <span class="d-flex justify-content-end mt-1"><i class="fa fa-plus"></i><a *ngIf="room.childrenInRoom.length<20" href="javascript:void(0)" (click)="addChild(room)" class="custom-theme">&nbsp;Add a child</a></span>
         </div>
       </div>
     </div>
   </div>
   <div class="form-group row">
-      <h4 class="col-12">
-        <a href="javascript:void(0)" (click)="newRoom()" class="col-12">
-          <span class="font-weight-bold">+</span>&nbsp;Add a room</a>
+      <h4 class="col-12 mt-1">
+          <a href="javascript:void(0)" (click)="newRoom()" class="custom-theme">
+              <i class="fa fa-plus"></i>&nbsp;Add a room</a>
       </h4>
   </div>
+  <button class="btn custom-theme-bg btn-lg pl-5 pr-5 w-100" role="button" (click)="doSearch()"><i class="fa fa-search"></i>&nbsp;Search</button>
   <hr />
-  <h4>Filters</h4>
-  <div>
-    <a href="javascript:void(0)" (click)="priceCollapsed = !priceCollapsed" [attr.aria-expanded]="!priceCollapsed" aria-controls="price-filters">Price</a>
-    <div class="from-group" id="price-filters" [collapse]="priceCollapsed">
-      <div class="form-check" *ngFor="let filter of this.filters[0]">
-        <label class="form-check-label" for="{{filter.name}}">{{filter.value}}</label>
-        <input type="checkbox" name="{{filter.name}}" value="{{filter.name}}" id="{{filter.name}}" [(ngModel)]="filter.checked"/>
-      </div>
-    </div>
-  </div>
-  <div>      
-    <a href="javascript:void(0)" (click)="ratingCollapsed = !ratingCollapsed" [attr.aria-expanded]="!ratingCollapsed" aria-controls="rating-filters">Rating</a>
-    <div class="from-group" id="rating-filters" [collapse]="ratingCollapsed">
-        <div class="form-check" *ngFor="let filter of this.filters[1]">
+  <h4><a class="custom-theme" href="javascript:void(0)" (click)="filtersCollapsed = !filtersCollapsed" [attr.aria-expanded]="!filtersCollapsed" aria-controls="filters">Filters</a></h4>
+  <div id="filters" [collapse]="filtersCollapsed">
+    <div>
+      <a class="custom-theme" href="javascript:void(0)" (click)="priceCollapsed = !priceCollapsed" [attr.aria-expanded]="!priceCollapsed" aria-controls="price-filters"><b>Price</b></a>
+      <div class="form-group" id="price-filters" [collapse]="priceCollapsed">
+        <div class="form-check d-flex justify-content-between" *ngFor="let filter of this.filters[0]">
           <label class="form-check-label" for="{{filter.name}}">{{filter.value}}</label>
           <input type="checkbox" name="{{filter.name}}" value="{{filter.name}}" id="{{filter.name}}" [(ngModel)]="filter.checked"/>
         </div>
-    </div>  
-  </div>  
-  <div> 
-    <a href="javascript:void(0)" (click)="categoryCollapsed = !categoryCollapsed" [attr.aria-expanded]="!categoryCollapsed" aria-controls="cat-filters">Category</a>
-    <div class="from-group" id="cat-filters" [collapse]="categoryCollapsed">
-      <div class="form-check" *ngFor="let filter of this.filters[2]">
-        <label class="form-check-label" for="{{filter.name}}">{{filter.value}}</label>
-        <input type="checkbox" name="{{filter.name}}" value="{{filter.name}}" id="{{filter.name}}" [(ngModel)]="filter.checked"/>
       </div>
-    </div> 
-  </div>     
-  <div>
-    <a href="javascript:void(0)" (click)="typeCollapsed = !typeCollapsed" [attr.aria-expanded]="!typeCollapsed" aria-controls="type-filters">Type</a>
-    <div class="from-group" id="type-filters" [collapse]="typeCollapsed">
-      <div class="form-check" *ngFor="let filter of this.filters[3]">
-        <label class="form-check-label" for="{{filter.name}}">{{filter.value}}</label>
-        <input type="checkbox" name="{{filter.name}}" value="{{filter.name}}" id="{{filter.name}}" [(ngModel)]="filter.checked"/>
-      </div>
+    </div>
+    <div>      
+      <a class="custom-theme" href="javascript:void(0)" (click)="ratingCollapsed = !ratingCollapsed" [attr.aria-expanded]="!ratingCollapsed" aria-controls="rating-filters"><b>Rating</b></a>
+      <div class="from-group" id="rating-filters" [collapse]="ratingCollapsed">
+          <div class="form-check d-flex justify-content-between" *ngFor="let filter of this.filters[1]">
+            <label class="form-check-label" for="{{filter.name}}">{{filter.value}}</label>
+            <input type="checkbox" name="{{filter.name}}" value="{{filter.name}}" id="{{filter.name}}" [(ngModel)]="filter.checked"/>
+          </div>
+      </div>  
     </div>  
-  </div>
-  <div>    
-    <a href="javascript:void(0)" (click)="paymentCollapsed = !paymentCollapsed" [attr.aria-expanded]="!paymentCollapsed" aria-controls="payment-filters">Payment</a>
-    <div class="from-group" id="payment-filters" [collapse]="paymentCollapsed">
-      <div class="form-check" *ngFor="let filter of this.filters[4]">
-        <label class="form-check-label" for="{{filter.name}}">{{filter.value}}</label>
-        <input type="checkbox" name="{{filter.name}}" value="{{filter.name}}" id="{{filter.name}}" [(ngModel)]="filter.checked"/>
+    <div> 
+      <a class="custom-theme" href="javascript:void(0)" (click)="categoryCollapsed = !categoryCollapsed" [attr.aria-expanded]="!categoryCollapsed" aria-controls="cat-filters"><b>Category</b></a>
+      <div class="from-group" id="cat-filters" [collapse]="categoryCollapsed">
+        <div class="form-check d-flex justify-content-between" *ngFor="let filter of this.filters[2]">
+          <label class="form-check-label" for="{{filter.name}}">{{filter.value}}</label>
+          <input type="checkbox" name="{{filter.name}}" value="{{filter.name}}" id="{{filter.name}}" [(ngModel)]="filter.checked"/>
+        </div>
+      </div> 
+    </div>     
+    <div>
+      <a class="custom-theme" href="javascript:void(0)" (click)="typeCollapsed = !typeCollapsed" [attr.aria-expanded]="!typeCollapsed" aria-controls="type-filters"><b>Type</b></a>
+      <div class="from-group" id="type-filters" [collapse]="typeCollapsed">
+        <div class="form-check d-flex justify-content-between" *ngFor="let filter of this.filters[3]">
+          <label class="form-check-label" for="{{filter.name}}">{{filter.value}}</label>
+          <input type="checkbox" name="{{filter.name}}" value="{{filter.name}}" id="{{filter.name}}" [(ngModel)]="filter.checked"/>
+        </div>
+      </div>  
+    </div>
+    <div>    
+      <a class="custom-theme" href="javascript:void(0)" (click)="paymentCollapsed = !paymentCollapsed" [attr.aria-expanded]="!paymentCollapsed" aria-controls="payment-filters"><b>Payment</b></a>
+      <div class="from-group" id="payment-filters" [collapse]="paymentCollapsed">
+        <div class="form-check d-flex justify-content-between" *ngFor="let filter of this.filters[4]">
+          <label class="form-check-label" for="{{filter.name}}">{{filter.value}}</label>
+          <input type="checkbox" name="{{filter.name}}" value="{{filter.name}}" id="{{filter.name}}" [(ngModel)]="filter.checked"/>
+        </div>
+      </div>
+    </div>
+    <div>     
+      <a class="custom-theme" href="javascript:void(0)" (click)="amenityCollapsed = !amenityCollapsed" [attr.aria-expanded]="!amenityCollapsed" aria-controls="amenity-filters"><b>Amenities</b></a>
+      <div class="from-group" id="amenity-filters" [collapse]="amenityCollapsed">
+        <div class="form-check d-flex justify-content-between" *ngFor="let filter of this.filters[5]">
+          <label class="form-check-label" for="{{filter.name}}">{{filter.value}}</label>
+          <input type="checkbox" name="{{filter.name}}" value="{{filter.name}}" id="{{filter.name}}" [(ngModel)]="filter.checked"/>
+        </div>
       </div>
     </div>
   </div>
-  <div>     
-    <a href="javascript:void(0)" (click)="amenityCollapsed = !amenityCollapsed" [attr.aria-expanded]="!amenityCollapsed" aria-controls="amenity-filters">Amenity</a>
-    <div class="from-group" id="amenity-filters" [collapse]="amenityCollapsed">
-      <div class="form-check" *ngFor="let filter of this.filters[5]">
-        <label class="form-check-label" for="{{filter.name}}">{{filter.value}}</label>
-        <input type="checkbox" name="{{filter.name}}" value="{{filter.name}}" id="{{filter.name}}" [(ngModel)]="filter.checked"/>
-      </div>
-    </div>
-  </div>
+  <br/>
 </form>
   

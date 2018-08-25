@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Result } from '../model/result';
 
 @Component({
   selector: 'app-result-page',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ResultPageComponent implements OnInit {
 
+  results: Result[];
+
   constructor() { }
 
   ngOnInit() {
+    this.results = [];
   }
 
 }
