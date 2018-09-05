@@ -4,6 +4,7 @@ import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
 
 import java.io.File;
+
 public class SiteFactory {
 
     private static WebClient client;
@@ -12,27 +13,28 @@ public class SiteFactory {
         if(client == null) {
             client = new WebClient(BrowserVersion.CHROME);
             client.getOptions().setCssEnabled(false);
-            client.getOptions().setJavaScriptEnabled(true);             ///needs to be true because expedia needs javascript to be enabled
+            client.getOptions().setJavaScriptEnabled(true);
             client.getOptions().setThrowExceptionOnScriptError(false);
             client.getOptions().setThrowExceptionOnFailingStatusCode(false);
             client.getOptions().setPrintContentOnFailingStatusCode(false);
+            client.getOptions().setPopupBlockerEnabled(true);
             client.getCookieManager().setCookiesEnabled(true);
         }
 
         return client;
     }
 
-    public static Site getSite(File file){
+    public static SiteScraper getSite(File file){
         String className = extractClassName(file.getName());
-        Class clazz = null;
+        Class clazz;
         try{
-            clazz = Class.forName("com.ftn.uns.scraper.site.implementation."+className+"SiteImpl");
+            clazz = Class.forName("com.ftn.uns.scraper.site.scraper."+className+"SiteScraperImpl");
         }catch (ClassNotFoundException e) {
             return null;
         }
 
         try {
-            return (Site)clazz.newInstance();
+            return (SiteScraper) clazz.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
             return null;

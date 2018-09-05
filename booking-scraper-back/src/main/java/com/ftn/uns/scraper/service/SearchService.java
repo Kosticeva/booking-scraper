@@ -1,16 +1,14 @@
 package com.ftn.uns.scraper.service;
 
-import com.ftn.uns.scraper.result.Result;
-import com.ftn.uns.scraper.query.model.SearchQuery;
-import com.ftn.uns.scraper.site.Site;
+import com.ftn.uns.scraper.model.query.SearchQuery;
+import com.ftn.uns.scraper.model.result.Results;
 import com.ftn.uns.scraper.site.SiteFactory;
+import com.ftn.uns.scraper.site.SiteScraper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 @Service
 public class SearchService {
@@ -18,22 +16,29 @@ public class SearchService {
     @Autowired
     PriceCompareService comparator;
 
-    public List<Result> getResults(SearchQuery query){
+    public Results getResults(SearchQuery query){
 
-        File dir = new File("src/main/resources/booking-site-sources");
+        File dir = new File("src/main/resources/sites/");
         File[] sites = dir.listFiles();
-        List<Result> results = new ArrayList<>();
+        Results finalResults = new Results();
+        finalResults.setHotels(new ArrayList<>());
+        finalResults.setMarkers(new ArrayList<>());
 
         for(File file: sites) {
-            Site site = SiteFactory.getSite(file);
-
-            results.addAll((Collection<? extends Result>)site.scrapePage(site.getResultPage(site.createSearchQueryURL(site.createLocationParameter(query.getLocation()),
+            SiteScraper scraper = SiteFactory.getSite(file);
+            Results results = scraper.scrapePage(query);
+            finalResults.getHotels().addAll(results.getHotels());
+            finalResults.getMarkers().add(results.getMarkers().get(0));
+            /*Site site = new AgodaSiteImpl();
+            String searchQuery = site.createSearchQueryURL(site.createLocationParameter(query.getLocation()),
                     site.createCheckInParameter(query.getDates()), site.createCheckOutParameter(query.getDates()),
                     site.createRoomsParameter(query.getRooms()), site.createAdultsParameter(query.getRooms()),
-                    site.createChildrenParameter(query.getRooms())), query.getFilters())));
+                    site.createChildrenParameter(query.getRooms()));
+            HtmlPage result = site.getResultPage(searchQuery, query.getFilters());
+            finalResults.getHotels().addAll((Collection<? extends Result>)site.scrapePage(result));*/
         }
 
-        results = comparator.scrapeHotels(results, new ArrayList<>());
-        return results;
+        finalResults.setHotels(comparator.scrapeHotels(finalResults.getHotels(), new ArrayList<>()));
+        return finalResults;
     }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { SearchQuery } from '../../model/search-query';
 import { Room } from '../../model/room';
 import { Router, ActivatedRoute } from '../../../../node_modules/@angular/router';
@@ -14,7 +14,7 @@ export class FilterComponent implements OnInit {
   now: Date;
   years: Number[];
   adults: Number[];
-  filters: any[];
+  @Input() filters: any[];
 
   ngOnInit() {
     this.now = new Date();
@@ -25,7 +25,8 @@ export class FilterComponent implements OnInit {
         checkInDate: new Date(),
         checkOutDate: new Date(this.now.getTime() + 24*60*60*1000)
       },
-      rooms: []
+      rooms: [],
+      markers: []
     }
     this.years = [];
     this.adults = [];
@@ -36,7 +37,6 @@ export class FilterComponent implements OnInit {
       this.adults.push(i);
     }
     this.extractParamsFromUri();
-    this.initFilters();
   }
 
   constructor(
@@ -68,10 +68,10 @@ export class FilterComponent implements OnInit {
   doSearch(){
     let href="search?destination="+encodeURI(this.searchQuery.location)+"&checkIn=";
     const ciDate = this.searchQuery.dates.checkInDate;
-    href += ciDate.getDate() + "-" + (ciDate.getMonth()+1) + "-" + ciDate.getFullYear();
+    href += ciDate.toLocaleString('sv-SE', { year: 'numeric', month: 'numeric', day: 'numeric' });
     href += "&checkOut=";
     const coDate = this.searchQuery.dates.checkOutDate;
-    href += coDate.getDate() + "-" + (coDate.getMonth()+1) + "-" + coDate.getFullYear();
+    href += coDate.toLocaleString('sv-SE', { year: 'numeric', month: 'numeric', day: 'numeric' });
     href += "&rooms="+this.searchQuery.rooms.length;
     href += "&adults=";
 
@@ -94,7 +94,21 @@ export class FilterComponent implements OnInit {
     }
 
     href += children;
-    this.router.navigateByUrl(href);
+    href += this.addFilters();
+    window.location.href = href;
+  }
+
+  addFilters(): string{
+    let filterParam = "&filters=";
+    for(let filterArray in this.filters){
+      for(let filter of this.filters[filterArray]){
+        if(filter.checked){
+          filterParam += encodeURI(filter.filterName)+",";
+        }
+      }
+    }
+
+    return filterParam.substring(0, filterParam.length-1);
   }
 
   extractParamsFromUri(){
@@ -106,6 +120,8 @@ export class FilterComponent implements OnInit {
       let rooms = params['rooms'];
       let adults = params['adults'];
       let children = params['children'];
+
+      let filters = params['filters'];
 
       const adultPerRoom = adults.split(',');
       const childrenPerRoom = children.split(';');
@@ -134,68 +150,5 @@ export class FilterComponent implements OnInit {
       }
       
     });
-  }
-
-  initFilters(){
-    this.filters = [];
-    let amenities = [];
-    amenities.push({
-      name: 'kitchen',
-      value: 'Kitchen',
-      checked: false
-    });
-    amenities.push({
-      name: 'pool',
-      value: 'Pool',
-      checked: false
-    });
-    amenities.push({
-      name: 'wifi',
-      value: 'Wi-Fi',
-      checked: false
-    });
-    amenities.push({
-      name: 'parking',
-      value: 'Parking',
-      checked: false
-    });
-    this.filters.push(amenities);
-
-    let payments =  [];
-    payments.push({
-      name: 'freeCanc',
-      value: 'Free cancelation',
-      checked: false
-    });
-    this.filters.push(payments);
-
-    let prices = [];
-    prices.push({
-      name: 'price1',
-      value: '0$-57$',
-      checked: false
-    });
-    prices.push({
-      name: 'price2',
-      value: '110$-199$',
-      checked: false
-    });
-    this.filters.push(prices);
-
-    let cats = [];
-    cats.push({
-      name: 'cat1',
-      value: '1*',
-      checked: false
-    });
-    cats.push({
-      name: 'cat2',
-      value: '**',
-      checked: false
-    });
-    this.filters.push(cats);
-
-    this.filters.push([]);
-    this.filters.push([]);
   }
 }

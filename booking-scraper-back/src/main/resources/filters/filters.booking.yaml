@@ -1,0 +1,166 @@
+amenityFilters:
+    - localName: "Wi-Fi"
+      site: BOOKING
+      parameter: "data-id"
+      value: "hotelfacility-107"
+      name: "wifi"
+    - localName: "Pool"
+      site: BOOKING
+      parameter: "data-id"
+      value: "hotelfacility-301"
+      name: "pool"
+    - localName: "Breakfast included"
+      site: BOOKING
+      parameter: "data-id"
+      value: "mealplan-1"
+      name: "freeBreakfast"
+    - localName: "Airport shuttle"
+      site: BOOKING
+      parameter: "data-id"
+      value: "hotelfacility-17"
+      name: "airportTransport"
+    - localName: "Parking"
+      site: BOOKING
+      parameter: "data-id"
+      value: "hotelfacility-2"
+      name: "parking"
+    - localName: "Kitchen"
+      site: BOOKING
+      parameter: "data-id"
+      value: "roomfacility-8000999"
+      name: "kitchen"
+    - localName: "Pet friendly"
+      site: BOOKING
+      parameter: "data-id"
+      value: "hotelfacility-4"
+      name: "petFriendly"
+    - localName: "Accessible for disabled"
+      site: BOOKING
+      parameter: "data-id"
+      value: "accessible_room_facilities-8000153,accessible_room_facilities-8000134,accessible_room_facilities-8000149,accessible_room_facilities-8000152,accessible_room_facilities-8000151"
+      name: "disabledFriendly"
+
+paymentFilters:
+  - localName: "Free cancellation"
+    site: BOOKING
+    parameter: "data-id"
+    value: "fc-2"
+    name: "freeCanc"
+
+typeFilters:
+  - localName: "Hotel"
+    site: BOOKING
+    parameter: "data-id"
+    value: "ht_id-204"
+    name: "hotel"
+  - localName: "Apartment"
+    site: BOOKING
+    parameter: "data-id"
+    value: "ht_id-201"
+    name: "apartment"
+  - localName: "Hostel"
+    site: BOOKING
+    parameter: "data-id"
+    value: "ht_id-203"
+    name: "hostel"
+  - localName: "Bed & Breakfast"
+    site: BOOKING
+    parameter: "data-id"
+    value: "ht_id-208"
+    name: "bedBreakfast"
+  - localName: "Guest House"
+    site: BOOKING
+    parameter: "data-id"
+    value: "ht_id-216"
+    name: "guestHouse"
+  - localName: "Vacation Home"
+    site: BOOKING
+    parameter: "data-id"
+    value: "ht_id-220"
+    name: "vacationHome"
+  - localName: "Motel"
+    site: BOOKING
+    parameter: "data-id"
+    value: "ht_id-205"
+    name: "motel"
+
+starFilters:
+  - localName: "5*"
+    site: BOOKING
+    parameter: "data-id"
+    value: "class-5"
+    name: "5star"
+  - localName: "4*"
+    site: BOOKING
+    parameter: "data-id"
+    value: "class-4"
+    name: "4star"
+  - localName: "3*"
+    site: BOOKING
+    parameter: "data-id"
+    value: "class-3"
+    name: "3star"
+  - localName: "2*"
+    site: BOOKING
+    parameter: "data-id"
+    value: "class-2"
+    name: "2star"
+  - localName: "1*"
+    site: BOOKING
+    parameter: "data-id"
+    value: "class-1"
+    name: "1star"
+  - localName: "0*"
+    site: BOOKING
+    parameter: "data-id"
+    value: "class-0"
+    name: "0star"
+
+ratingFilters:
+  - localName: "9+(4.5+)"
+    site: BOOKING
+    parameter: "data-id"
+    value: "review_score-90"
+    name: "above9"
+  - localName: "8+(4+)"
+    site: BOOKING
+    parameter: "data-id"
+    value: "review_score-80"
+    name: "above8"
+  - localName: "7+(3.5+)"
+    site: BOOKING
+    parameter: "data-id"
+    value: "review_score-70"
+    name: "above7"
+  - localName: "6+(3+)"
+    site: BOOKING
+    parameter: "data-id"
+    value: "review_score-60"
+    name: "above6"
+
+priceFilters:
+  - localName: "0$-75$"
+    site: BOOKING
+    parameter: "data-id"
+    value: "pri-1"
+    name: "0to75"
+  - localName: "57$-1245$"
+    site: BOOKING
+    parameter: "data-id"
+    value: "pri-2"
+    name: "57to124"
+  - localName: "110$-199$"
+    site: BOOKING
+    parameter: "data-id"
+    value: "pri-3"
+    name: "110to199"
+  - localName: "110$-230$"
+    site: BOOKING
+    parameter: "data-id"
+    value: "pri-4"
+    name: "110to230"
+  - localName: "200$+"
+    site: BOOKING
+    parameter: "data-id"
+    value: "pri-5"
+    name: "above200"

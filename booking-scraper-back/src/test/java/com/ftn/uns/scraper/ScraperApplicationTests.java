@@ -1,10 +1,10 @@
 package com.ftn.uns.scraper;
 
-import com.ftn.uns.scraper.result.Result;
-import com.ftn.uns.scraper.query.model.Dates;
-import com.ftn.uns.scraper.query.model.Location;
-import com.ftn.uns.scraper.query.model.Room;
-import com.ftn.uns.scraper.query.model.SearchQuery;
+import com.ftn.uns.scraper.model.result.Result;
+import com.ftn.uns.scraper.model.query.Dates;
+import com.ftn.uns.scraper.model.query.Location;
+import com.ftn.uns.scraper.model.query.Room;
+import com.ftn.uns.scraper.model.query.SearchQuery;
 import com.ftn.uns.scraper.service.PriceCompareService;
 import com.ftn.uns.scraper.site.Site;
 import com.ftn.uns.scraper.site.SiteFactory;
@@ -57,16 +57,19 @@ public class ScraperApplicationTests {
         rooms.add(r2);
         query.setRooms(rooms);
 
-        query.setFilters(new ArrayList<>());
-        query.getFilters().add("Kitchen");
+        List<String> filters = new ArrayList<>();
+        filters.add("Kitchen");
+
+        query.setFilters((String[])filters.toArray());
 
         File dir = new File("src/main/resources/booking-site-sources");
         File[] sites = dir.listFiles();
         List<Result> results = new ArrayList<>();
 
         for(File file: sites) {
-            Site site = SiteFactory.getSite(file);
+            //Site site = SiteFactory.getSite(file);
 
+            Site site = null;
             String searchQuery = site.createSearchQueryURL(site.createLocationParameter(query.getLocation()),
                     site.createCheckInParameter(query.getDates()), site.createCheckOutParameter(query.getDates()),
                     site.createRoomsParameter(query.getRooms()), site.createAdultsParameter(query.getRooms()),

@@ -2,7 +2,7 @@
   <div class="row mt-2 mb-1">
     <h4>Showing {{results.length}} results</h4>
   </div>
-  <div class="row" *ngFor="let result of results">
+  <div class="row" *ngFor="let result of results.results">
     <div class="col-12 card">
       <div class="filter-bg p-2 d-flex justify-content-between">
         <h3><a class="custom-theme" href="{{result.resultLink}}">{{result.resultTitle}}</a></h3>
@@ -38,11 +38,11 @@
                 <tbody>
                   <tr *ngFor="let offer of result.offers">
                     <td>
-                      <img *ngIf="offer.site==='Expedia'" src="https://1843784937.rsc.cdn77.org/wp-content/uploads/2015/12/Expedia-Logo-EPS-vector-image.png" width="40" height="30"/>
-                      <img *ngIf="offer.site==='Booking'" src="https://botw-pd.s3.amazonaws.com/styles/logo-thumbnail/s3/072016/booking_logo.jpg?itok=RBex_H1u" width="40" height="30"/>
-                      <img *ngIf="offer.site==='Orbitz'" src="https://botw-pd.s3.amazonaws.com/styles/logo-thumbnail/s3/022011/orbitz-blues-version-converted.png?itok=8Ftvt9Vt" width="40" height="30"/>
-                      <img *ngIf="offer.site==='Travelocity'" src="https://botw-pd.s3.amazonaws.com/styles/logo-thumbnail/s3/0018/8808/brand.gif?itok=Z60LeCEm" width="40" height="30"/>
-                      <img *ngIf="offer.site==='Hotels'" src="https://www.asiamiles.com/content/dam/am-content/brand-v2/travel-pillar/logo-image/Hotels.com/hotels_logo_31012018.png" width="40" height="30"/>
+                      <img *ngIf="offer.site==='expedia'" src="https://1843784937.rsc.cdn77.org/wp-content/uploads/2015/12/Expedia-Logo-EPS-vector-image.png" width="40" height="30"/>
+                      <img *ngIf="offer.site==='booking'" src="https://botw-pd.s3.amazonaws.com/styles/logo-thumbnail/s3/072016/booking_logo.jpg?itok=RBex_H1u" width="40" height="30"/>
+                      <img *ngIf="offer.site==='orbitz'" src="https://botw-pd.s3.amazonaws.com/styles/logo-thumbnail/s3/022011/orbitz-blues-version-converted.png?itok=8Ftvt9Vt" width="40" height="30"/>
+                      <img *ngIf="offer.site==='travelocity'" src="https://botw-pd.s3.amazonaws.com/styles/logo-thumbnail/s3/0018/8808/brand.gif?itok=Z60LeCEm" width="40" height="30"/>
+                      <img *ngIf="offer.site==='hotels'" src="https://www.asiamiles.com/content/dam/am-content/brand-v2/travel-pillar/logo-image/Hotels.com/hotels_logo_31012018.png" width="40" height="30"/>
                     </td>
                     <td>
                       <a class="custom-theme" href="{{offer.link}}">${{offer.price}}</a>

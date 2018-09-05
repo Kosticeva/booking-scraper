@@ -6,6 +6,7 @@ export class SearchQuery {
         public location: string,
         public dates: Dates,
         public rooms: Room[],
-        public filters: string[]
+        public filters: string[],
+        public markers: any[]
     ){}
 }

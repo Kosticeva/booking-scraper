@@ -1,6 +1,6 @@
 package com.ftn.uns.scraper;
 
-import com.ftn.uns.scraper.query.model.Filters;
+import com.ftn.uns.scraper.model.filter.Filters;
 import org.junit.Test;
 import org.yaml.snakeyaml.Yaml;
 

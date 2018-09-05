@@ -69,54 +69,54 @@
     <div>
       <a class="custom-theme" href="javascript:void(0)" (click)="priceCollapsed = !priceCollapsed" [attr.aria-expanded]="!priceCollapsed" aria-controls="price-filters"><b>Price</b></a>
       <div class="form-group" id="price-filters" [collapse]="priceCollapsed">
-        <div class="form-check d-flex justify-content-between" *ngFor="let filter of this.filters[0]">
-          <label class="form-check-label" for="{{filter.name}}">{{filter.value}}</label>
-          <input type="checkbox" name="{{filter.name}}" value="{{filter.name}}" id="{{filter.name}}" [(ngModel)]="filter.checked"/>
+        <div class="form-check d-flex justify-content-between" *ngFor="let filter of this.filters.priceFilters">
+          <label class="form-check-label" for="{{filter.filterName}}">{{filter.filterLocalName}}</label>
+          <input type="checkbox" name="{{filter.filterName}}" value="{{filter.filterName}}" id="{{filter.filterName}}" [(ngModel)]="filter.checked"/>
         </div>
       </div>
     </div>
     <div>      
       <a class="custom-theme" href="javascript:void(0)" (click)="ratingCollapsed = !ratingCollapsed" [attr.aria-expanded]="!ratingCollapsed" aria-controls="rating-filters"><b>Rating</b></a>
       <div class="from-group" id="rating-filters" [collapse]="ratingCollapsed">
-          <div class="form-check d-flex justify-content-between" *ngFor="let filter of this.filters[1]">
-            <label class="form-check-label" for="{{filter.name}}">{{filter.value}}</label>
-            <input type="checkbox" name="{{filter.name}}" value="{{filter.name}}" id="{{filter.name}}" [(ngModel)]="filter.checked"/>
+          <div class="form-check d-flex justify-content-between" *ngFor="let filter of this.filters.ratingFilters">
+            <label class="form-check-label" for="{{filter.filterName}}">{{filter.filterLocalName}}</label>
+            <input type="checkbox" name="{{filter.filterName}}" value="{{filter.filterName}}" id="{{filter.filterName}}" [(ngModel)]="filter.checked"/>
           </div>
       </div>  
     </div>  
     <div> 
       <a class="custom-theme" href="javascript:void(0)" (click)="categoryCollapsed = !categoryCollapsed" [attr.aria-expanded]="!categoryCollapsed" aria-controls="cat-filters"><b>Category</b></a>
       <div class="from-group" id="cat-filters" [collapse]="categoryCollapsed">
-        <div class="form-check d-flex justify-content-between" *ngFor="let filter of this.filters[2]">
-          <label class="form-check-label" for="{{filter.name}}">{{filter.value}}</label>
-          <input type="checkbox" name="{{filter.name}}" value="{{filter.name}}" id="{{filter.name}}" [(ngModel)]="filter.checked"/>
+        <div class="form-check d-flex justify-content-between" *ngFor="let filter of this.filters.starFilters">
+          <label class="form-check-label" for="{{filter.filterName}}">{{filter.filterLocalName}}</label>
+          <input type="checkbox" name="{{filter.filterName}}" value="{{filter.filterName}}" id="{{filter.filterName}}" [(ngModel)]="filter.checked"/>
         </div>
       </div> 
     </div>     
     <div>
       <a class="custom-theme" href="javascript:void(0)" (click)="typeCollapsed = !typeCollapsed" [attr.aria-expanded]="!typeCollapsed" aria-controls="type-filters"><b>Type</b></a>
       <div class="from-group" id="type-filters" [collapse]="typeCollapsed">
-        <div class="form-check d-flex justify-content-between" *ngFor="let filter of this.filters[3]">
-          <label class="form-check-label" for="{{filter.name}}">{{filter.value}}</label>
-          <input type="checkbox" name="{{filter.name}}" value="{{filter.name}}" id="{{filter.name}}" [(ngModel)]="filter.checked"/>
+        <div class="form-check d-flex justify-content-between" *ngFor="let filter of this.filters.typeFilters">
+          <label class="form-check-label" for="{{filter.filterName}}">{{filter.filterLocalName}}</label>
+          <input type="checkbox" name="{{filter.filterName}}" value="{{filter.filterName}}" id="{{filter.filterName}}" [(ngModel)]="filter.checked"/>
         </div>
       </div>  
     </div>
     <div>    
       <a class="custom-theme" href="javascript:void(0)" (click)="paymentCollapsed = !paymentCollapsed" [attr.aria-expanded]="!paymentCollapsed" aria-controls="payment-filters"><b>Payment</b></a>
       <div class="from-group" id="payment-filters" [collapse]="paymentCollapsed">
-        <div class="form-check d-flex justify-content-between" *ngFor="let filter of this.filters[4]">
-          <label class="form-check-label" for="{{filter.name}}">{{filter.value}}</label>
-          <input type="checkbox" name="{{filter.name}}" value="{{filter.name}}" id="{{filter.name}}" [(ngModel)]="filter.checked"/>
+        <div class="form-check d-flex justify-content-between" *ngFor="let filter of this.filters.paymentFilters">
+          <label class="form-check-label" for="{{filter.filterName}}">{{filter.filterLocalName}}</label>
+          <input type="checkbox" name="{{filter.filterName}}" value="{{filter.filterName}}" id="{{filter.filterName}}" [(ngModel)]="filter.checked"/>
         </div>
       </div>
     </div>
     <div>     
       <a class="custom-theme" href="javascript:void(0)" (click)="amenityCollapsed = !amenityCollapsed" [attr.aria-expanded]="!amenityCollapsed" aria-controls="amenity-filters"><b>Amenities</b></a>
       <div class="from-group" id="amenity-filters" [collapse]="amenityCollapsed">
-        <div class="form-check d-flex justify-content-between" *ngFor="let filter of this.filters[5]">
-          <label class="form-check-label" for="{{filter.name}}">{{filter.value}}</label>
-          <input type="checkbox" name="{{filter.name}}" value="{{filter.name}}" id="{{filter.name}}" [(ngModel)]="filter.checked"/>
+        <div class="form-check d-flex justify-content-between" *ngFor="let filter of this.filters.amenityFilters">
+          <label class="form-check-label" for="{{filter.filterName}}">{{filter.filterLocalName}}</label>
+          <input type="checkbox" name="{{filter.filterName}}" value="{{filter.filterName}}" id="{{filter.filterName}}" [(ngModel)]="filter.checked"/>
         </div>
       </div>
     </div>

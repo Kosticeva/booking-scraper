@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Result } from '../model/result';
+import { ResultService } from '../service/result.service';
+import { Router, ActivatedRoute } from '../../../node_modules/@angular/router';
+import { Results } from '../model/results';
 
 @Component({
   selector: 'app-result-page',
@@ -8,12 +10,49 @@ import { Result } from '../model/result';
 })
 export class ResultPageComponent implements OnInit {
 
-  results: Result[];
+  results: Results;
+  filters: any[];
+  loading: boolean;
 
-  constructor() { }
+  constructor(
+    private resultService: ResultService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
-    this.results = [];
+    this.results = new Results([], []);
+    this.filters = [];
+    this.loading = true;
+
+    this.resultService.getResults(this.router.url).subscribe(
+      (data) => {
+        this.results =  data;
+        this.loading = false;
+        this.resultService.getFilters().subscribe(
+          (data) => {
+            let filterParts = [];
+            let params = window.location.href.split("&");
+            for(let param of params){
+              if(param.startsWith("filters=")){
+                filterParts = param.substring(8).split(",");
+                break;
+              }
+            }
+
+            for(let filterArray in data){
+              for(let filter of data[filterArray]){
+                filter.checked = filterParts.indexOf(filter.filterName) > -1 ? true: false;
+              }
+            }
+            
+            this.filters = data;
+          }
+        )
+      },
+      (error) =>  {
+        this.loading = false;
+      }
+    )
   }
 
 }

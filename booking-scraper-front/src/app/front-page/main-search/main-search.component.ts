@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SearchQuery } from '../../model/search-query';
 import { Room } from '../../model/room';
 import { Router } from '../../../../node_modules/@angular/router';
+import { ResultService } from '../../service/result.service';
 
 @Component({
   selector: 'app-main-search',
@@ -13,8 +14,15 @@ export class MainSearchComponent implements OnInit {
   now: Date;
   years: Number[];
   adults: Number[];
+  searchResults: {
+    predictions: any[]
+  }
 
   ngOnInit() {
+    this.searchResults = {
+      predictions: []
+    }
+
     this.now = new Date();
     this.searchQuery = {
       location: "",
@@ -23,7 +31,8 @@ export class MainSearchComponent implements OnInit {
         checkInDate: new Date(),
         checkOutDate: new Date(this.now.getTime() + 24*60*60*1000)
       },
-      rooms: []
+      rooms: [],
+      markers: []
     }
     this.years = [];
     this.adults = [];
@@ -36,7 +45,8 @@ export class MainSearchComponent implements OnInit {
   }
 
   constructor(
-    private router: Router
+    private router: Router,
+    private resultService: ResultService
   ) { }
 
   newRoom(){
@@ -63,10 +73,10 @@ export class MainSearchComponent implements OnInit {
   doSearch(){
     let href="search?destination="+encodeURI(this.searchQuery.location)+"&checkIn=";
     const ciDate = this.searchQuery.dates.checkInDate;
-    href += ciDate.getFullYear() + "-" + (ciDate.getMonth()+1) + "-" + ciDate.getDate();
+    href += ciDate.toLocaleString('sv-SE', { year: 'numeric', month: 'numeric', day: 'numeric' });
     href += "&checkOut=";
     const coDate = this.searchQuery.dates.checkOutDate;
-    href += coDate.getFullYear() + "-" + (coDate.getMonth()+1) + "-" + coDate.getDate();
+    href += coDate.toLocaleString('sv-SE', { year: 'numeric', month: 'numeric', day: 'numeric' });
     href += "&rooms="+this.searchQuery.rooms.length;
     href += "&adults=";
 
@@ -74,11 +84,15 @@ export class MainSearchComponent implements OnInit {
     for(let i=0; i<this.searchQuery.rooms.length; i++){
       href += this.searchQuery.rooms[i].adultsInRoom;
 
-      for(let j=0; j<this.searchQuery.rooms[i].childrenInRoom.length; j++){
-        children += this.searchQuery.rooms[i].childrenInRoom[j];
+      if(this.searchQuery.rooms[i].childrenInRoom.length == 0){
+        children+=0;
+      }else{
+        for(let j=0; j<this.searchQuery.rooms[i].childrenInRoom.length; j++){
+          children += this.searchQuery.rooms[i].childrenInRoom[j];
 
-        if(j < this.searchQuery.rooms[i].childrenInRoom.length -1){
-          children += ",";
+          if(j < this.searchQuery.rooms[i].childrenInRoom.length -1){
+            children += ",";
+          }
         }
       }
 
@@ -89,6 +103,15 @@ export class MainSearchComponent implements OnInit {
     }
 
     href += children;
+    href += "&filters=";
     this.router.navigateByUrl(href);
+  }
+
+  searchLocations(){
+    this.resultService.getPlaces(this.searchQuery.location).subscribe(
+      (data) => {
+        this.searchResults = data;
+      }
+    )
   }
 }

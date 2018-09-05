@@ -1,0 +1,166 @@
+amenityFilters:
+  - localName: "Wi-Fi"
+    site: EXPEDIA
+    parameter: "amenities"
+    value: "19"
+    name: "wifi"
+  - localName: "Pool"
+    site: EXPEDIA
+    parameter: "amenities"
+    value: "7"
+    name: "pool"
+  - localName: "Breakfast included"
+    site: EXPEDIA
+    parameter: "amenities"
+    value: "16"
+    name: "freeBreakfast"
+  - localName: "Airport shuttle"
+    site: EXPEDIA
+    parameter: "amenities"
+    value: "66"
+    name: "airportTransport"
+  - localName: "Parking"
+    site: EXPEDIA
+    parameter: "amenities"
+    value: "14"
+    name: "parking"
+  - localName: "Kitchen"
+    site: EXPEDIA
+    parameter: "amenities"
+    value: "2158"
+    name: "kitchen"
+  - localName: "Pet friendly"
+    site: EXPEDIA
+    parameter: "amenities"
+    value: "17"
+    name: "petFriendly"
+  - localName: "Accessible for disabled"
+    site: EXPEDIA
+    parameter: "amenities"
+    value: "58,62,63"
+    name: "disabledFriendly"
+    
+paymentFilters:
+  - localName: "Free cancellation"
+    site: EXPEDIA
+    parameter: "cancellable"
+    value: "true"
+    name: "freeCanc"
+
+typeFilters:
+  - localName: "Hotel"
+    site: EXPEDIA
+    parameter: "lodging"
+    value: "hotel"
+    name: "hotel"
+  - localName: "Apartment"
+    site: EXPEDIA
+    parameter: "lodging"
+    value: "apartment"
+    name: "apartment"
+  - localName: "Hostel"
+    site: EXPEDIA
+    parameter: "lodging"
+    value: "hostel"
+    name: "hostel"
+  - localName: "Bed & Breakfast"
+    site: EXPEDIA
+    parameter: "lodging"
+    value: "bedBreakfast"
+    name: "bedBreakfast"
+  - localName: "Guest House"
+    site: EXPEDIA
+    parameter: "lodging"
+    value: "guestHouse"
+    name: "guestHouse"
+  - localName: "Vacation Home"
+    site: EXPEDIA
+    parameter: "lodging"
+    value: "vacationHome,condo"
+    name: "vacationHome"
+  - localName: "Motel"
+    site: EXPEDIA
+    parameter: "lodging"
+    value: "motel"
+    name: "motel"
+
+starFilters:
+  - localName: "5*"
+    site: EXPEDIA
+    parameter: "star"
+    value: "50"
+    name: "5star"
+  - localName: "4*"
+    site: EXPEDIA
+    parameter: "star"
+    value: "40"
+    name: "4star"
+  - localName: "3*"
+    site: EXPEDIA
+    parameter: "star"
+    value: "30"
+    name: "3star"
+  - localName: "2*"
+    site: EXPEDIA
+    parameter: "star"
+    value: "20"
+    name: "2star"
+  - localName: "1*"
+    site: EXPEDIA
+    parameter: "star"
+    value: "10"
+    name: "1star"
+  - localName: "0*"
+    site: EXPEDIA
+    parameter: "star"
+    value: "0"
+    name: "0star"
+      
+ratingFilters:
+  - localName: "9+(4.5+)"
+    site: EXPEDIA
+    parameter: "guestRating"
+    value: "4.5"
+    name: "above9"
+  - localName: "8+(4+)"
+    site: EXPEDIA
+    parameter: "guestRating"
+    value: "4"
+    name: "above8"
+  - localName: "7+(3.5+)"
+    site: EXPEDIA
+    parameter: "guestRating"
+    value: "3.5"
+    name: "above7"
+  - localName: "6+(3+)"
+    site: EXPEDIA
+    parameter: "guestRating"
+    value: "3"
+    name: "above6"
+      
+priceFilters:
+  - localName: "0$-75$"
+    site: EXPEDIA
+    parameter: "price"
+    value: "0"
+    name: "0to75"
+  - localName: "57$-1245$"
+    site: EXPEDIA
+    parameter: "price"
+    value: "1"
+    name: "57to124"
+  - localName: "110$-199$"
+    site: EXPEDIA
+    parameter: "price"
+    value: "2"
+    name: "110to199"
+  - localName: "110$-230$"
+    site: EXPEDIA
+    parameter: "price"
+    value: "2"
+    name: "110to230"
+  - localName: "200$+"
+    site: EXPEDIA
+    parameter: "price"
+    value: "3"
+    name: "above200"

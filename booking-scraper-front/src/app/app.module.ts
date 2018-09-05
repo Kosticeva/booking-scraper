@@ -10,9 +10,14 @@ import { MainSearchComponent } from './front-page/main-search/main-search.compon
 import { AppRoutingModule } from './app-routing.module';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { LoadingModule } from 'ngx-loading';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatAutocompleteModule, MatInputModule } from '@angular/material';
 
 import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import { FormsModule } from '../../node_modules/@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '../../node_modules/@angular/forms';
+import { ResultService } from './service/result.service';
+import { HttpClientModule } from '../../node_modules/@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -30,9 +35,15 @@ import { FormsModule } from '../../node_modules/@angular/forms';
     TooltipModule.forRoot(),
     BsDatepickerModule.forRoot(),
     DatepickerModule.forRoot(),
-    CollapseModule.forRoot()
+    CollapseModule.forRoot(),
+    BrowserAnimationsModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatAutocompleteModule,
+    LoadingModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [ResultService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

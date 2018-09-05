@@ -1,9 +1,9 @@
 package com.ftn.uns.scraper.site.implementation;
 
-import com.ftn.uns.scraper.result.Result;
-import com.ftn.uns.scraper.query.model.Dates;
-import com.ftn.uns.scraper.query.model.Location;
-import com.ftn.uns.scraper.query.model.Room;
+import com.ftn.uns.scraper.model.result.Result;
+import com.ftn.uns.scraper.model.query.Dates;
+import com.ftn.uns.scraper.model.query.Location;
+import com.ftn.uns.scraper.model.query.Room;
 import com.ftn.uns.scraper.site.Site;
 import com.ftn.uns.scraper.site.SiteFactory;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
@@ -70,7 +70,7 @@ public class HotwireSiteImpl implements Site {
     }
 
     @Override
-    public String createFilterParameter(List<String> filters) {
+    public String createFilterParameter(String[] filters) {
         return null;
     }
 
@@ -89,7 +89,7 @@ public class HotwireSiteImpl implements Site {
     }
 
     @Override
-    public HtmlPage getResultPage(String searchUrl, List<String> filters) {
+    public HtmlPage getResultPage(String searchUrl, String[] filters) {
         try {
             return SiteFactory.getClient().getPage(searchUrl);
         } catch (IOException io) {

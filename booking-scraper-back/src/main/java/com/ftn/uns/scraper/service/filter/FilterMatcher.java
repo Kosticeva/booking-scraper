@@ -1,7 +1,7 @@
 package com.ftn.uns.scraper.service.filter;
 
-import com.ftn.uns.scraper.query.model.Filter;
-import com.ftn.uns.scraper.query.model.Filters;
+import com.ftn.uns.scraper.model.filter.Filter;
+import com.ftn.uns.scraper.model.filter.Filters;
 import com.ftn.uns.scraper.site.SiteType;
 
 import java.io.FileNotFoundException;
@@ -10,7 +10,7 @@ import java.util.List;
 
 public class FilterMatcher {
 
-    public List<Filter> getFiltersByName(List<String> filterNames, SiteType type){
+    public List<Filter> getFiltersByName(String[] filterNames, SiteType type){
         List<Filter> siteFilters = new ArrayList<>();
         try{
             siteFilters = collectFilters(FilterFactory.getFilters(type));
@@ -22,8 +22,8 @@ public class FilterMatcher {
 
         for(String filterName: filterNames){
             Filter filter = new Filter();
-            filter.setFilterName(filterName);
-            filter.setFilterSite(type);
+            filter.setName(filterName);
+            filter.setSite(type);
             if(siteFilters.contains(filter)){
                 retVal.add(siteFilters.get(siteFilters.indexOf(filter)));
             }
