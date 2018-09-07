@@ -1,10 +1,10 @@
 export class Result{
     constructor(
-        public resultPrice: number,
-        public resultTitle: string,
-        public resultLink: string,
-        public resultRating: number,
-        public resultCategory: number,
+        public price: number,
+        public title: string,
+        public link: string,
+        public rating: number,
+        public category: number,
         public offers: any[]
     ){}
 }

@@ -3,6 +3,9 @@
       <app-filter class="col-3" [filters]="filters"></app-filter>
       <app-result-list class="col-9" [results]="results"></app-result-list>
   </div>
+  <div class="row" (scroll)="loadMoreResults()">
+    <div class="col"> &nbsp;</div>
+  </div>
 </div>
 
 <ngx-loading [show]="loading"></ngx-loading>

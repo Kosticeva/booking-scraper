@@ -24,7 +24,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 36000)
 public class SearchResource {
 
     @Autowired
@@ -75,9 +75,11 @@ public class SearchResource {
         for(String adult: adults){
             Room room = new Room();
             room.setChildrenInRoom(new ArrayList<>());
-            String[] childrenAges = children[idx].split(",");
-            for(String child: childrenAges){
-                room.getChildrenInRoom().add(Integer.parseInt(child));
+            if(!"".equals(children[idx])) {
+                String[] childrenAges = children[idx].split(",");
+                for (String child : childrenAges) {
+                    room.getChildrenInRoom().add(Integer.parseInt(child));
+                }
             }
             room.setAdultsInRoom(Integer.parseInt(adult));
             rooms.add(room);

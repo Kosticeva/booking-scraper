@@ -1,5 +1,7 @@
 package com.ftn.uns.scraper.model.result;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ftn.uns.scraper.site.SiteType;
 import lombok.Data;
 
 import java.util.List;
@@ -13,4 +15,7 @@ public class Result {
     private Double category;
     private Double rating;
     private List<Offer> offers;
+
+    @JsonIgnore
+    private SiteType type;
 }

@@ -2,6 +2,7 @@ package com.ftn.uns.scraper.service;
 
 import com.ftn.uns.scraper.model.result.Offer;
 import com.ftn.uns.scraper.model.result.Result;
+import com.ftn.uns.scraper.site.SiteType;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class PriceCompareService {
             Offer offer = new Offer();
             offer.setLink(result.getLink());
             offer.setPrice(result.getPrice());
-            offer.setSite(result.getLink().substring(12, result.getLink().indexOf(".com/")));
+            offer.setSite(result.getType());
             cheapest.getOffers().add(offer);
         }
 

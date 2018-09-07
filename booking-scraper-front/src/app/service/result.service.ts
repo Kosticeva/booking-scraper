@@ -1,6 +1,5 @@
 import { Injectable } from "../../../node_modules/@angular/core";
 import { Observable } from "../../../node_modules/rxjs";
-import { Result } from "../model/result";
 import { HttpClient, HttpHeaders } from "../../../node_modules/@angular/common/http";
 import { Results } from "../model/results";
 

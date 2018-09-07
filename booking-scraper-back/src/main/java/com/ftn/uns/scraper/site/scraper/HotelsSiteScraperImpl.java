@@ -8,11 +8,15 @@ import com.ftn.uns.scraper.site.SiteFactory;
 import com.ftn.uns.scraper.site.SiteScraper;
 import com.ftn.uns.scraper.site.SiteType;
 import com.ftn.uns.scraper.site.loader.HotelsSiteLoaderImpl;
-import com.gargoylesoftware.htmlunit.ScriptResult;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import lombok.Cleanup;
+import lombok.SneakyThrows;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -22,6 +26,7 @@ import java.util.List;
 public class HotelsSiteScraperImpl implements SiteScraper {
     
     @Override
+    @SneakyThrows
     public Results scrapePage(SearchQuery query) {
         Results results = new Results();
         results.setHotels(new ArrayList<>());
@@ -42,72 +47,42 @@ public class HotelsSiteScraperImpl implements SiteScraper {
             hotelsMarker.setType(SiteType.HOTELS);
         }
 
-        HotelsSiteLoaderImpl loader = new HotelsSiteLoaderImpl();
-        HtmlPage page = loader.turnPage(query, hotelsMarker);
-        List<HtmlElement> hotels = extractHotels(page);
-
-        for(int i=0; i<hotelsMarker.getPageNumber(); i++){
-            String javascr = "window.scrollBy(0, "+ (i+1) + "000);";
-            ScriptResult ress = page.executeJavaScript(javascr);
-            try{
-                Thread.sleep(5000);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            if(ress.getNewPage().getUrl().toExternalForm().startsWith("https://hotels.com")) {
-                page = (HtmlPage) ress.getNewPage();
-            }else{
-                i--;
-            }
-
-            hotels = extractHotels(page);
+        if(hotelsMarker.getPageNumber() > 0){
+            results.getMarkers().add(hotelsMarker);
+            return results;
         }
 
-        /*while(hotels.size() < 10) {
-            List<HtmlAnchor> nn = hotels.get(hotels.size()-1).getByXPath(".//a");
-            try {
-                @Cleanup BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/site-htmls/hotels-pre.html")));
-                writer.write(page.asXml());
-                page.setFocusedElement(nn.get(0));
-                Thread.sleep(10000);
-                @Cleanup BufferedWriter writerr = new BufferedWriter(new FileWriter(new File("src/main/resources/site-htmls/hotels-post.html")));
-                writerr.write(page.asXml());
-            }catch (Exception e){
-                e.printStackTrace();
-            }
+        HotelsSiteLoaderImpl loader = new HotelsSiteLoaderImpl();
+        HtmlPage page = loader.turnPage(query, hotelsMarker);
 
-            hotels = extractHotels(page);
-        }*/
+        @Cleanup BufferedWriter wr = new BufferedWriter(new FileWriter(new File("src/main/resources/hotels.html")));
+        wr.write(page.asXml());
 
+        List<HtmlElement> hotels = extractHotels(page);
 
-        for(HtmlElement hotel: hotels){
-            if(hotels.indexOf(hotel) < hotelsMarker.getLinkIndex()){
-                continue;
-            }
+        for(HtmlElement hotel: hotels) {
 
             Result result = new Result();
             result.setTitle(extractHotelName(hotel));
             result.setLink(extractHotelLink(hotel));
             result.setRating(extractRating(hotel));
+            result.setType(SiteType.HOTELS);
             result.setOffers(new ArrayList<>());
 
             try {
                 HtmlPage hotelPage = SiteFactory.getClient().getPage(result.getLink());
                 result.setCategory(extractCategory(hotelPage.getDocumentElement()));
                 result.setPrice(extractPrice(hotelPage.getDocumentElement()));
-            }catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
                 result.setCategory(0.0);
                 result.setPrice(0.0);
             }
 
             results.getHotels().add(result);
-
-            if(results.getHotels().size() == 10){
-                hotelsMarker.setLinkIndex((hotels.indexOf(hotel)+1) % hotels.size());
-                break;
-            }
         }
+
+        hotelsMarker.setPageNumber(1);
 
         results.getMarkers().add(hotelsMarker);
         return results;
@@ -146,15 +121,29 @@ public class HotelsSiteScraperImpl implements SiteScraper {
     @Override
     public Double extractPrice(HtmlElement element) {
         List<HtmlElement> priceTables = element.getByXPath("//div[@class='widget-tooltip-bd']");
-        List<HtmlElement> prices = priceTables.get(0).getByXPath(".//td");
 
-        if(prices.size() > 0) {
-            String[] priceParts = prices.get(prices.size() - 1).asText().split("\\$");
-            NumberFormat format = NumberFormat.getCurrencyInstance();
-            try {
-                return format.parse("$" + priceParts[priceParts.length-1]).doubleValue();
-            }catch (ParseException parse){
-                return 0.0;
+        if(priceTables.size() > 0) {
+            List<HtmlElement> prices = priceTables.get(0).getByXPath(".//td");
+
+            if (prices.size() > 0) {
+                String[] priceParts = prices.get(prices.size() - 1).asText().split("\\$");
+                NumberFormat format = NumberFormat.getCurrencyInstance();
+                try {
+                    return format.parse("$" + priceParts[priceParts.length - 1]).doubleValue();
+                } catch (ParseException parse) {
+                    return 0.0;
+                }
+            }
+        }else{
+            priceTables = element.getByXPath("//div[@class='price']");
+            if(priceTables.size() > 0) {
+                String[] priceParts = priceTables.get(0).asText().split("\\$");
+                NumberFormat format = NumberFormat.getCurrencyInstance();
+                try {
+                    return format.parse("$" + priceParts[priceParts.length - 1]).doubleValue();
+                } catch (ParseException parse) {
+                    return 0.0;
+                }
             }
         }
 

@@ -3,8 +3,6 @@ package com.ftn.uns.scraper.site;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
 
-import java.io.File;
-
 public class SiteFactory {
 
     private static WebClient client;
@@ -24,11 +22,11 @@ public class SiteFactory {
         return client;
     }
 
-    public static SiteScraper getSite(File file){
-        String className = extractClassName(file.getName());
+    public static SiteScraper getSite(SiteType type){
+        String className = extractClassName(type);
         Class clazz;
         try{
-            clazz = Class.forName("com.ftn.uns.scraper.site.scraper."+className+"SiteScraperImpl");
+            clazz = Class.forName(className);
         }catch (ClassNotFoundException e) {
             return null;
         }
@@ -41,12 +39,8 @@ public class SiteFactory {
         }
     }
 
-    private static String extractClassName(String fileName) {
-        String name = fileName.substring(0, fileName.length()-9);
-
-        String firstLetter = name.substring(0,1).toUpperCase();
-        String rest = name.substring(1);
-
-        return firstLetter + rest;
+    private static String extractClassName(SiteType type) {
+        String lowerCaseName = type.name().substring(0, 1) + type.name().substring(1).toLowerCase();
+        return String.format("com.ftn.uns.scraper.site.scraper.%sSiteScraperImpl", lowerCaseName);
     }
 }

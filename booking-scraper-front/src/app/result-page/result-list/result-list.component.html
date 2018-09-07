@@ -2,10 +2,10 @@
   <div class="row mt-2 mb-1">
     <h4>Showing {{results.length}} results</h4>
   </div>
-  <div class="row" *ngFor="let result of results.results">
+  <div class="row" *ngFor="let result of results.hotels">
     <div class="col-12 card">
       <div class="filter-bg p-2 d-flex justify-content-between">
-        <h3><a class="custom-theme" href="{{result.resultLink}}">{{result.resultTitle}}</a></h3>
+        <h3><a class="custom-theme" href="{{result.link}}">{{result.title}}</a></h3>
       </div>
       <div class="card-body">
         <div class="container">
@@ -13,20 +13,20 @@
             <div class="col-7">
               <div>
                 Stars: 
-                <i *ngIf="result.resultCategory >= 1" class="fa fa-star text-warning"></i>
-                <i *ngIf="result.resultCategory >= 2" class="fa fa-star text-warning"></i>
-                <i *ngIf="result.resultCategory >= 3" class="fa fa-star text-warning"></i>
-                <i *ngIf="result.resultCategory >= 4" class="fa fa-star text-warning"></i>
-                <i *ngIf="result.resultCategory == 5" class="fa fa-star text-warning"></i>
+                <i *ngIf="result.category >= 1" class="fa fa-star text-warning"></i>
+                <i *ngIf="result.category >= 2" class="fa fa-star text-warning"></i>
+                <i *ngIf="result.category >= 3" class="fa fa-star text-warning"></i>
+                <i *ngIf="result.category >= 4" class="fa fa-star text-warning"></i>
+                <i *ngIf="result.category == 5" class="fa fa-star text-warning"></i>
               </div>
               <div>
-                Rating: <b [ngClass]="{'text-danger': result.resultRating<6 , 'text-warning': result.resultRating<8, 'text-success': result.resultRating>=8}">{{result.resultRating}} / 10</b>
+                Rating: <b [ngClass]="{'text-danger': result.rating<6 , 'text-warning': result.rating<8, 'text-success': result.rating>=8}">{{result.rating}} / 10</b>
               </div>
               <br />
               <div class="d-flex justify-content-between">
                 <h2>Best offer:</h2>
                 <div class="d-flex justify-content-start">
-                  <h2><a class="custom-theme" href="{{result.resultLink}}" style="text-decoration: none">${{result.resultPrice}}</a></h2>
+                  <h2><a class="custom-theme" href="{{result.link}}" style="text-decoration: none">${{result.price}}</a></h2>
                 </div>
               </div>
             </div>
@@ -38,11 +38,11 @@
                 <tbody>
                   <tr *ngFor="let offer of result.offers">
                     <td>
-                      <img *ngIf="offer.site==='expedia'" src="https://1843784937.rsc.cdn77.org/wp-content/uploads/2015/12/Expedia-Logo-EPS-vector-image.png" width="40" height="30"/>
-                      <img *ngIf="offer.site==='booking'" src="https://botw-pd.s3.amazonaws.com/styles/logo-thumbnail/s3/072016/booking_logo.jpg?itok=RBex_H1u" width="40" height="30"/>
-                      <img *ngIf="offer.site==='orbitz'" src="https://botw-pd.s3.amazonaws.com/styles/logo-thumbnail/s3/022011/orbitz-blues-version-converted.png?itok=8Ftvt9Vt" width="40" height="30"/>
-                      <img *ngIf="offer.site==='travelocity'" src="https://botw-pd.s3.amazonaws.com/styles/logo-thumbnail/s3/0018/8808/brand.gif?itok=Z60LeCEm" width="40" height="30"/>
-                      <img *ngIf="offer.site==='hotels'" src="https://www.asiamiles.com/content/dam/am-content/brand-v2/travel-pillar/logo-image/Hotels.com/hotels_logo_31012018.png" width="40" height="30"/>
+                      <img *ngIf="offer.site==='EXPEDIA'" src="https://1843784937.rsc.cdn77.org/wp-content/uploads/2015/12/Expedia-Logo-EPS-vector-image.png" width="40" height="30"/>
+                      <img *ngIf="offer.site==='BOOKING'" src="https://botw-pd.s3.amazonaws.com/styles/logo-thumbnail/s3/072016/booking_logo.jpg?itok=RBex_H1u" width="40" height="30"/>
+                      <img *ngIf="offer.site==='ORBITZ'" src="https://botw-pd.s3.amazonaws.com/styles/logo-thumbnail/s3/022011/orbitz-blues-version-converted.png?itok=8Ftvt9Vt" width="40" height="30"/>
+                      <img *ngIf="offer.site==='TRAVELOCITY'" src="https://botw-pd.s3.amazonaws.com/styles/logo-thumbnail/s3/0018/8808/brand.gif?itok=Z60LeCEm" width="40" height="30"/>
+                      <img *ngIf="offer.site==='HOTELS'" src="https://www.asiamiles.com/content/dam/am-content/brand-v2/travel-pillar/logo-image/Hotels.com/hotels_logo_31012018.png" width="40" height="30"/>
                     </td>
                     <td>
                       <a class="custom-theme" href="{{offer.link}}">${{offer.price}}</a>

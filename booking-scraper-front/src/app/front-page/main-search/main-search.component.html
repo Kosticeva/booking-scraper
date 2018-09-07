@@ -1,12 +1,12 @@
 <form class="container-fluid">
   <div class="row">
     <mat-form-field class="col-12 input-group">
-      <input class="form-control" type="text" placeholder="Destination..." name="destination" [(ngModel)]="searchQuery.location" aria-label="Number" matInput [matAutocomplete]="auto" />
+      <input class="form-control" type="text" placeholder="Destination..." name="destination" (keyup)="searchLocations()" [(ngModel)]="searchQuery.location" aria-label="Number" matInput [matAutocomplete]="auto" />
       <div class="input-group-append">
-        <button class="btn custom-theme-bg btn-lg pl-5 pr-5" role="button" (click)="searchLocations()"><i class="fa fa-search"></i></button>
+        <button class="btn custom-theme-bg btn-lg pl-5 pr-5" role="button" (click)="doSearch()"><i class="fa fa-search"></i></button>
       </div>
       <mat-autocomplete #auto="matAutocomplete">
-        <mat-option *ngFor="let item of searchResults.predictions" [value]="item.description">
+        <mat-option *ngFor="let item of searchResults.predictions" [value]="item.description" (click)="setLocation(item.description)">
           {{ item.description }}
         </mat-option>
       </mat-autocomplete>
@@ -67,7 +67,7 @@
     </div>
     <div *ngIf="searchQuery.rooms.length<20" class="col-3">
         <h4 class="mt-1">
-            <a href="javascript:void(0)" (click)="newRoom()" class="custom-theme">
+            <a href="javascript:void(0)" (click)="newRoom()" class="custom-theme" id="newRoomLink">
               <i class="fa fa-plus"></i>&nbsp;Add a room</a>
         </h4>
     </div>

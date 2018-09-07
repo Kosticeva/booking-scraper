@@ -41,7 +41,7 @@ export class ResultPageComponent implements OnInit {
 
             for(let filterArray in data){
               for(let filter of data[filterArray]){
-                filter.checked = filterParts.indexOf(filter.filterName) > -1 ? true: false;
+                filter.checked = filterParts.indexOf(filter.name) > -1 ? true: false;
               }
             }
             
@@ -51,8 +51,13 @@ export class ResultPageComponent implements OnInit {
       },
       (error) =>  {
         this.loading = false;
+        alert(error.message);
       }
     )
+  }
+
+  loadMoreResults(){
+    alert("Loading ...");
   }
 
 }

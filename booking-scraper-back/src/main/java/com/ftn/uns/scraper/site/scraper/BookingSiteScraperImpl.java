@@ -10,7 +10,12 @@ import com.ftn.uns.scraper.site.loader.BookingSiteLoaderImpl;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import lombok.Cleanup;
+import lombok.SneakyThrows;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -19,6 +24,7 @@ import java.util.List;
 public class BookingSiteScraperImpl implements SiteScraper {
     
     @Override
+    @SneakyThrows
     public Results scrapePage(SearchQuery query) {
         Results results = new Results();
         results.setHotels(new ArrayList<>());
@@ -45,6 +51,9 @@ public class BookingSiteScraperImpl implements SiteScraper {
         while(results.getHotels().size() < 10){
             page = loader.turnPage(query, bookingMarker);
 
+            @Cleanup BufferedWriter wr = new BufferedWriter(new FileWriter(new File("src/main/resources/book.html")));
+            wr.write(page.asXml());
+
             List<HtmlElement> hotels = extractHotels(page);
             if(hotels.size() == 0){
                 break;
@@ -62,6 +71,7 @@ public class BookingSiteScraperImpl implements SiteScraper {
                 result.setCategory(extractCategory(hotel));
                 result.setPrice(extractPrice(hotel));
                 result.setRating(extractRating(hotel));
+                result.setType(SiteType.BOOKING);
                 result.setOffers(new ArrayList<>());
                 results.getHotels().add(result);
                 idx++;
@@ -106,7 +116,7 @@ public class BookingSiteScraperImpl implements SiteScraper {
 
     @Override
     public Double extractPrice(HtmlElement tag) {
-        String RESULTPRICE_XPATH = ".//div[@class[contains(., 'entire_row_clickable')]]";
+        String RESULTPRICE_XPATH = ".//div[@class[contains(., 'js_rackrate_')]]";
         List<HtmlElement> prices = tag.getByXPath(RESULTPRICE_XPATH);
         
         if(prices.size() > 0) {
@@ -128,8 +138,7 @@ public class BookingSiteScraperImpl implements SiteScraper {
         List<HtmlElement> categories = tag.getByXPath(RESULTCAT_XPATH);
 
         if(categories.size() > 0) {
-            return Double.parseDouble(categories.get(0).asText().substring(
-                    0, categories.get(0).asText().indexOf(" stars")));
+            return Double.parseDouble(categories.get(0).asText().substring(0, 1));
         }
 
         return 0.0;

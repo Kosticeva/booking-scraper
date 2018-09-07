@@ -1,7 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { SearchQuery } from '../../model/search-query';
 import { Room } from '../../model/room';
-import { Router, ActivatedRoute } from '../../../../node_modules/@angular/router';
+import { Router, ActivatedRoute, Route } from '../../../../node_modules/@angular/router';
+import { ResultService } from '../../service/result.service';
+import { Results } from '../../model/results';
 
 @Component({
   selector: 'app-filter',
@@ -15,8 +17,14 @@ export class FilterComponent implements OnInit {
   years: Number[];
   adults: Number[];
   @Input() filters: any[];
+  @Input() results: Results;
+  @Input() loading: boolean;
+  searchResults: any;
 
   ngOnInit() {
+    this.searchResults = {
+      predictions: []
+    }
     this.now = new Date();
     this.searchQuery = {
       location: "",
@@ -41,8 +49,11 @@ export class FilterComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private activatedRoute: ActivatedRoute
-  ) { }
+    private activatedRoute: ActivatedRoute,
+    private resultService: ResultService
+  ) { 
+    //this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+  }
 
   newRoom(){
     this.searchQuery.rooms.push(
@@ -66,6 +77,12 @@ export class FilterComponent implements OnInit {
   }
 
   doSearch(){
+    const msg = this.validateSearchParameters();
+    if(msg != null){
+      alert(msg);
+      return;
+    }
+
     let href="search?destination="+encodeURI(this.searchQuery.location)+"&checkIn=";
     const ciDate = this.searchQuery.dates.checkInDate;
     href += ciDate.toLocaleString('sv-SE', { year: 'numeric', month: 'numeric', day: 'numeric' });
@@ -95,7 +112,7 @@ export class FilterComponent implements OnInit {
 
     href += children;
     href += this.addFilters();
-    window.location.href = href;
+    this.router.navigateByUrl(href);
   }
 
   addFilters(): string{
@@ -111,6 +128,20 @@ export class FilterComponent implements OnInit {
     return filterParam.substring(0, filterParam.length-1);
   }
 
+  searchLocations(){
+    if(this.searchQuery.location.length > 2){
+      this.resultService.getPlaces(this.searchQuery.location).subscribe(
+        (data) => {
+          this.searchResults = data;
+        }
+      )
+    }
+  }
+
+  setLocation(location: string) {
+    this.searchQuery.location = location;
+  }
+
   extractParamsFromUri(){
     this.activatedRoute.queryParams.subscribe(params => {
       let loc = params['destination'];
@@ -120,8 +151,6 @@ export class FilterComponent implements OnInit {
       let rooms = params['rooms'];
       let adults = params['adults'];
       let children = params['children'];
-
-      let filters = params['filters'];
 
       const adultPerRoom = adults.split(',');
       const childrenPerRoom = children.split(';');
@@ -150,5 +179,60 @@ export class FilterComponent implements OnInit {
       }
       
     });
+  }
+
+  validateSearchParameters(): string{
+    if(this.searchQuery.location == null || this.searchQuery.location == ""){
+      document.getElementsByName("destination")[0].classList.add("border");
+      document.getElementsByName("destination")[0].classList.add("border-danger");
+      return "Please specify a location";
+    }
+    document.getElementsByName("destination")[0].classList.remove("border-danger")
+    document.getElementsByName("destination")[0].classList.remove("border");
+
+
+    if(this.searchQuery.dates.checkInDate == null || this.searchQuery.dates.checkInDate.toString() === "Invalid Date"){
+      document.getElementsByName("check-in")[0].classList.add("border");
+      document.getElementsByName("check-in")[0].classList.add("border-danger");
+      return "Please specify a check in date";
+    }
+    document.getElementsByName("check-in")[0].classList.remove("border");
+    document.getElementsByName("check-in")[0].classList.remove("border-danger");
+
+    if(this.searchQuery.dates.checkOutDate == null || this.searchQuery.dates.checkOutDate.toString() === "Invalid Date"){
+      document.getElementsByName("check-out")[0].classList.add("border");
+      document.getElementsByName("check-out")[0].classList.add("border-danger");
+      return "Please specify a check out date";
+    }
+    document.getElementsByName("check-out")[0].classList.remove("border");
+    document.getElementsByName("check-out")[0].classList.remove("border-danger");
+
+    if(this.searchQuery.dates.checkInDate > this.searchQuery.dates.checkOutDate){
+      document.getElementsByName("check-in")[0].classList.add("border");
+      document.getElementsByName("check-in")[0].classList.add("border-danger");
+      document.getElementsByName("check-out")[0].classList.add("border");
+      document.getElementsByName("check-out")[0].classList.add("border-danger");
+      return "Make sure that the check in date is before the specified check out date";
+    }
+    document.getElementsByName("check-in")[0].classList.remove("border");
+    document.getElementsByName("check-in")[0].classList.remove("border-danger");
+    document.getElementsByName("check-out")[0].classList.remove("border");
+    document.getElementsByName("check-out")[0].classList.remove("border-danger");
+
+    const now = new Date();
+    now.setDate(now.getDate()-1);
+    if(this.searchQuery.dates.checkInDate < now) {
+      document.getElementsByName("check-in")[0].classList.add("border");
+      document.getElementsByName("check-in")[0].classList.add("border-danger");
+      return "You cannot book accommodation in the past";
+    }
+    document.getElementsByName("check-in")[0].classList.remove("border");
+    document.getElementsByName("check-in")[0].classList.remove("border-danger");
+
+    if(this.searchQuery.rooms.length == 0){
+      return "Please specify number of persons staying in each room";
+    }
+
+    return null;
   }
 }

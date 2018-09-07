@@ -2,7 +2,7 @@ import { Result } from "./result";
 
 export class Results {
     constructor(
-        public results: Result[],
+        public hotels: Result[],
         public markers: any[]
     ){}
 }

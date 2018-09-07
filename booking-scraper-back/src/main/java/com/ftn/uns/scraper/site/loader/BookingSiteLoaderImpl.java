@@ -9,6 +9,8 @@ import com.ftn.uns.scraper.site.SiteLoader;
 import com.ftn.uns.scraper.site.SiteType;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import lombok.Cleanup;
+import lombok.SneakyThrows;
 
 import java.io.*;
 import java.net.URLEncoder;
@@ -111,12 +113,14 @@ public class BookingSiteLoaderImpl implements SiteLoader {
                     "label=gen173nr-1FCAEoggJCAlhYSDNYBGjBAYgBAZgBMcIBCndpbmRvd3MgMTDIAQzYAQHoAQH4AQKSAgF5qAID;" +
                     "sid=a20d9f4619c3d0f15a64593f9c932e97;sb_price_type=total&;selected_currency=USD;" +
                     "changed_currency=1;top_currency=1");
+
             return doFilters(filters, SiteFactory.getClient().getPage(url));
         }catch (IOException e) {
             return null;
         }
     }
 
+    @SneakyThrows
     private HtmlPage doFilters(String[] filterNames, HtmlPage page) throws IOException {
         FilterMatcher matcher = new FilterMatcher();
         List<Filter> filters = matcher.getFiltersByName(filterNames, SiteType.BOOKING);

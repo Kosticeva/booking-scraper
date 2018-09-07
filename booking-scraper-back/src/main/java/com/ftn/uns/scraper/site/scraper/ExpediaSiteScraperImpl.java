@@ -10,7 +10,12 @@ import com.ftn.uns.scraper.site.loader.ExpediaSiteLoaderImpl;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import lombok.Cleanup;
+import lombok.SneakyThrows;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -21,6 +26,7 @@ import java.util.List;
 public class ExpediaSiteScraperImpl implements SiteScraper {
 
     @Override
+    @SneakyThrows
     public Results scrapePage(SearchQuery query) {
         Results results = new Results();
         results.setHotels(new ArrayList<>());
@@ -46,6 +52,8 @@ public class ExpediaSiteScraperImpl implements SiteScraper {
 
         while(results.getHotels().size() < 10){
             page = loader.turnPage(query, expediaMarker);
+            @Cleanup BufferedWriter wr = new BufferedWriter(new FileWriter(new File("src/main/resources/exp.html")));
+            wr.write(page.asXml());
 
             List<HtmlElement> hotels = extractHotels(page);
             for(HtmlElement hotel: hotels){
@@ -59,6 +67,7 @@ public class ExpediaSiteScraperImpl implements SiteScraper {
                 result.setCategory(extractCategory(hotel));
                 result.setPrice(extractPrice(hotel));
                 result.setRating(extractRating(hotel) * 2);
+                result.setType(SiteType.EXPEDIA);
                 result.setOffers(new ArrayList<>());
                 results.getHotels().add(result);
 
