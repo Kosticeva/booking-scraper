@@ -1,10 +1,7 @@
-<div class="container" *ngIf="!loading">
+<div class="container" *ngIf="!loading" (scroll)="loadMoreResults($event)">
   <div class="row p-0 m-0">
       <app-filter class="col-3" [filters]="filters"></app-filter>
       <app-result-list class="col-9" [results]="results"></app-result-list>
-  </div>
-  <div class="row" (scroll)="loadMoreResults()">
-    <div class="col"> &nbsp;</div>
   </div>
 </div>
 

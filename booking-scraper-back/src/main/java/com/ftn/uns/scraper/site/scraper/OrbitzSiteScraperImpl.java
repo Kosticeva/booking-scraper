@@ -26,7 +26,7 @@ import java.util.List;
 public class OrbitzSiteScraperImpl implements SiteScraper {
 
     @Override
-    @SneakyThrows
+    //@SneakyThrows
     public Results scrapePage(SearchQuery query) {
         Results results = new Results();
         results.setHotels(new ArrayList<>());
@@ -52,8 +52,8 @@ public class OrbitzSiteScraperImpl implements SiteScraper {
 
         while(results.getHotels().size() < 10){
             page = loader.turnPage(query, orbitzMarker);
-            @Cleanup BufferedWriter wr = new BufferedWriter(new FileWriter(new File("src/main/resources/orb.html")));
-            wr.write(page.asXml());
+            /*@Cleanup BufferedWriter wr = new BufferedWriter(new FileWriter(new File("src/main/resources/orb.html")));
+            wr.write(page.asXml());*/
 
             List<HtmlElement> hotels = extractHotels(page);
             for(HtmlElement hotel: hotels){

@@ -24,7 +24,7 @@ import java.util.List;
 public class BookingSiteScraperImpl implements SiteScraper {
     
     @Override
-    @SneakyThrows
+    //@SneakyThrows
     public Results scrapePage(SearchQuery query) {
         Results results = new Results();
         results.setHotels(new ArrayList<>());
@@ -51,8 +51,8 @@ public class BookingSiteScraperImpl implements SiteScraper {
         while(results.getHotels().size() < 10){
             page = loader.turnPage(query, bookingMarker);
 
-            @Cleanup BufferedWriter wr = new BufferedWriter(new FileWriter(new File("src/main/resources/book.html")));
-            wr.write(page.asXml());
+            /*@Cleanup BufferedWriter wr = new BufferedWriter(new FileWriter(new File("src/main/resources/book.html")));
+            wr.write(page.asXml());*/
 
             List<HtmlElement> hotels = extractHotels(page);
             if(hotels.size() == 0){

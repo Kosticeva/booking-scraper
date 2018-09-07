@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ResultService } from '../service/result.service';
 import { Router, ActivatedRoute } from '../../../node_modules/@angular/router';
 import { Results } from '../model/results';
@@ -24,7 +24,7 @@ export class ResultPageComponent implements OnInit {
     this.filters = [];
     this.loading = true;
 
-    this.resultService.getResults(this.router.url).subscribe(
+    this.resultService.getResults(this.router.url, []).subscribe(
       (data) => {
         this.results =  data;
         this.loading = false;
@@ -56,8 +56,20 @@ export class ResultPageComponent implements OnInit {
     )
   }
 
-  loadMoreResults(){
-    alert("Loading ...");
+  @HostListener("window:scroll", [])
+  onScroll(): void {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100) {
+      this.loading =  true;
+      this.resultService.getResults(this.router.url, this.results.markers).subscribe(
+        (data) => {
+          for(let hotel of data.hotels){
+            this.results.hotels.push(hotel);
+          }
+          this.results.markers = data.markers;
+          this.loading = false;
+        }
+      );
+    }
   }
-
+  
 }

@@ -24,15 +24,15 @@ public class SearchService {
 
         SiteType[] types = SiteType.values();
 
-        //for(SiteType type: types) {
+        for(SiteType type: types) {
             //if(type != )
-            SiteScraper scraper = SiteFactory.getSite(SiteType.BOOKING);
+            SiteScraper scraper = SiteFactory.getSite(type);
             if(scraper != null) {
                 Results results = scraper.scrapePage(query);
                 finalResults.getHotels().addAll(results.getHotels());
                 finalResults.getMarkers().add(results.getMarkers().get(0));
             }
-        //}
+        }
 
         finalResults.setHotels(comparator.scrapeHotels(finalResults.getHotels(), new ArrayList<>()));
         return finalResults;

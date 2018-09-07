@@ -10,8 +10,8 @@ export class ResultService{
         private http: HttpClient
     ) {}
 
-    getResults(url: string): Observable<Results>{
-        return this.http.post<Results>("http://localhost:8080/api"+url,[]);
+    getResults(url: string, searchMarkers: any[]): Observable<Results>{
+        return this.http.post<Results>("http://localhost:8080/api"+url,searchMarkers);
     }
 
     getFilters(): Observable<any>{

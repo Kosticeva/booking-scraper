@@ -26,7 +26,7 @@ import java.util.List;
 public class HotelsSiteScraperImpl implements SiteScraper {
     
     @Override
-    @SneakyThrows
+    //@SneakyThrows
     public Results scrapePage(SearchQuery query) {
         Results results = new Results();
         results.setHotels(new ArrayList<>());
@@ -55,8 +55,8 @@ public class HotelsSiteScraperImpl implements SiteScraper {
         HotelsSiteLoaderImpl loader = new HotelsSiteLoaderImpl();
         HtmlPage page = loader.turnPage(query, hotelsMarker);
 
-        @Cleanup BufferedWriter wr = new BufferedWriter(new FileWriter(new File("src/main/resources/hotels.html")));
-        wr.write(page.asXml());
+        /*@Cleanup BufferedWriter wr = new BufferedWriter(new FileWriter(new File("src/main/resources/hotels.html")));
+        wr.write(page.asXml());*/
 
         List<HtmlElement> hotels = extractHotels(page);
 
