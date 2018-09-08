@@ -14,11 +14,15 @@ export class MainSearchComponent implements OnInit {
   now: Date;
   years: Number[];
   adults: Number[];
+
   searchResults: {
     predictions: any[]
   }
 
+  autocompleteOpen: boolean;
+
   ngOnInit() {
+    this.autocompleteOpen = false;
     this.searchResults = {
       predictions: []
     }
@@ -115,6 +119,7 @@ export class MainSearchComponent implements OnInit {
     if(this.searchQuery.location.length > 2){
       this.resultService.getPlaces(this.searchQuery.location).subscribe(
         (data) => {
+          this.autocompleteOpen = true;
           this.searchResults = data;
         }
       )
@@ -123,6 +128,7 @@ export class MainSearchComponent implements OnInit {
 
   setLocation(location: string) {
     this.searchQuery.location = location;
+    this.autocompleteOpen = false;
   }
 
   validateSearchParameters(): string{

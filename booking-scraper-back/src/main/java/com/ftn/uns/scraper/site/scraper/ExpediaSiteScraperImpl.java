@@ -26,7 +26,7 @@ import java.util.List;
 public class ExpediaSiteScraperImpl implements SiteScraper {
 
     @Override
-    //@SneakyThrows
+    @SneakyThrows
     public Results scrapePage(SearchQuery query) {
         Results results = new Results();
         results.setHotels(new ArrayList<>());
@@ -52,8 +52,8 @@ public class ExpediaSiteScraperImpl implements SiteScraper {
 
         while(results.getHotels().size() < 10){
             page = loader.turnPage(query, expediaMarker);
-            /*@Cleanup BufferedWriter wr = new BufferedWriter(new FileWriter(new File("src/main/resources/exp.html")));
-            wr.write(page.asXml());*/
+            @Cleanup BufferedWriter wr = new BufferedWriter(new FileWriter(new File("src/main/resources/exp.html")));
+            wr.write(page.asXml());
 
             List<HtmlElement> hotels = extractHotels(page);
             for(HtmlElement hotel: hotels){

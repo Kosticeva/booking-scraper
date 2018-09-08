@@ -2,7 +2,6 @@ package com.ftn.uns.scraper.service;
 
 import com.ftn.uns.scraper.model.query.SearchQuery;
 import com.ftn.uns.scraper.model.result.Results;
-import com.ftn.uns.scraper.site.Site;
 import com.ftn.uns.scraper.site.SiteFactory;
 import com.ftn.uns.scraper.site.SiteScraper;
 import com.ftn.uns.scraper.site.SiteType;

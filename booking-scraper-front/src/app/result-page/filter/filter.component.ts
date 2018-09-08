@@ -20,8 +20,10 @@ export class FilterComponent implements OnInit {
   @Input() results: Results;
   @Input() loading: boolean;
   searchResults: any;
+  autocompleteOpen: boolean;
 
   ngOnInit() {
+    this.autocompleteOpen = false;
     this.searchResults = {
       predictions: []
     }
@@ -120,7 +122,7 @@ export class FilterComponent implements OnInit {
     for(let filterArray in this.filters){
       for(let filter of this.filters[filterArray]){
         if(filter.checked){
-          filterParam += encodeURI(filter.filterName)+",";
+          filterParam += encodeURI(filter.name)+",";
         }
       }
     }
@@ -132,6 +134,7 @@ export class FilterComponent implements OnInit {
     if(this.searchQuery.location.length > 2){
       this.resultService.getPlaces(this.searchQuery.location).subscribe(
         (data) => {
+          this.autocompleteOpen = true;
           this.searchResults = data;
         }
       )
@@ -139,6 +142,7 @@ export class FilterComponent implements OnInit {
   }
 
   setLocation(location: string) {
+    this.autocompleteOpen = false;
     this.searchQuery.location = location;
   }
 

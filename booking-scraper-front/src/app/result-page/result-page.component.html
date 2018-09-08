@@ -1,7 +1,19 @@
 <div class="container" *ngIf="!loading" (scroll)="loadMoreResults($event)">
+  <div class="row p-2 m-0 mt-1 custom-theme-bg">
+    <div class="col-3 ml-15">
+      <a routerLink="/home"><h1><i class="fa fa-home fa-lg text-light"></i></h1></a>
+    </div>
+    <div class="col-9 mr-15">
+      <h2>Showing {{results.hotels.length}} result<span *ngIf="results.hotels.length > 1">s</span></h2>
+    </div>
+  </div>
+  <br />
   <div class="row p-0 m-0">
       <app-filter class="col-3" [filters]="filters"></app-filter>
       <app-result-list class="col-9" [results]="results"></app-result-list>
+  </div>
+  <div class="row" *ngIf="loadingMore">
+    <h2 class="mx-auto"><i class="fa fa-spinner spinner-animation"></i></h2>
   </div>
 </div>
 

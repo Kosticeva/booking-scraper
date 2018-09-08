@@ -13,16 +13,20 @@ export class ResultPageComponent implements OnInit {
   results: Results;
   filters: any[];
   loading: boolean;
+  loadingMore: boolean;
 
   constructor(
     private resultService: ResultService,
-    private router: Router
-  ) { }
+    private router: Router,
+  ) { 
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+  }
 
   ngOnInit() {
     this.results = new Results([], []);
     this.filters = [];
     this.loading = true;
+    this.loadingMore = false;
 
     this.resultService.getResults(this.router.url, []).subscribe(
       (data) => {
@@ -49,7 +53,7 @@ export class ResultPageComponent implements OnInit {
           }
         )
       },
-      (error) =>  {
+      error =>  {
         this.loading = false;
         alert(error.message);
       }
@@ -58,15 +62,18 @@ export class ResultPageComponent implements OnInit {
 
   @HostListener("window:scroll", [])
   onScroll(): void {
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100) {
-      this.loading =  true;
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100 && this.loadingMore == false) {
+      this.loadingMore =  true;
       this.resultService.getResults(this.router.url, this.results.markers).subscribe(
         (data) => {
           for(let hotel of data.hotels){
             this.results.hotels.push(hotel);
           }
           this.results.markers = data.markers;
-          this.loading = false;
+          this.loadingMore = false;
+        },
+        error => {
+          this.loadingMore = false;
         }
       );
     }

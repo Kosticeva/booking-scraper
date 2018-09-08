@@ -1,7 +1,13 @@
 <div class="container-fluid">
-  <div class="row mt-2 mb-1">
-    <h4>Showing {{results.length}} results</h4>
+  <div class="row" *ngIf="filtersAdded.length > 0">
+    <div class="col-12">
+      <h5>Applied filters: </h5>
+    </div>
   </div>
+  <div class="row"  *ngIf="filtersAdded.length > 0">
+    <span class="custom-theme-bg p-1 m-1 col-1 rounded" *ngFor="let filter of filtersAdded">{{filter}}</span>
+  </div>
+
   <div class="row" *ngFor="let result of results.hotels">
     <div class="col-12 card">
       <div class="filter-bg p-2 d-flex justify-content-between">
@@ -33,7 +39,7 @@
             <div class="col-5 d-flex justify-content-end">
               <table>
                 <thead>
-                  <b>Other offers</b>
+                  <b>All offers</b>
                 </thead>
                 <tbody>
                   <tr *ngFor="let offer of result.offers">
