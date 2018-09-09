@@ -1,12 +1,12 @@
 package com.ftn.uns.scraper.model.result;
 
-import com.ftn.uns.scraper.site.SiteType;
+import com.ftn.uns.scraper.site.Site;
 import lombok.Data;
 
 @Data
 public class Offer {
 
     private String link;
-    private SiteType site;
+    private Site site;
     private Double price;
 }

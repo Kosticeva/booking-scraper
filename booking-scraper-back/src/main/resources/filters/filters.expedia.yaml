@@ -144,7 +144,7 @@ priceFilters:
     parameter: "price"
     value: "0"
     name: "0to75"
-  - localName: "57$-1245$"
+  - localName: "57$-124$"
     site: EXPEDIA
     parameter: "price"
     value: "1"

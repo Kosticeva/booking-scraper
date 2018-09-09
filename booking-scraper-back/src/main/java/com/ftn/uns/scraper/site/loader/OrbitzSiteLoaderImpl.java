@@ -4,9 +4,9 @@ import com.ftn.uns.scraper.model.filter.Filter;
 import com.ftn.uns.scraper.model.query.*;
 import com.ftn.uns.scraper.model.query.SearchMarker;
 import com.ftn.uns.scraper.service.filter.FilterMatcher;
-import com.ftn.uns.scraper.site.SiteFactory;
+import com.ftn.uns.scraper.site.ClientFactory;
 import com.ftn.uns.scraper.site.SiteLoader;
-import com.ftn.uns.scraper.site.SiteType;
+import com.ftn.uns.scraper.site.Site;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 import java.io.IOException;
@@ -20,7 +20,7 @@ public class OrbitzSiteLoaderImpl implements SiteLoader {
     public String createLocationParameter(Location location) {
         String LOCATION_PARAM = "destination";
         try {
-            return String.format("%s=%s",LOCATION_PARAM, URLEncoder.encode(location.getCity(), "UTF-8"));
+            return String.format("%s=%s", LOCATION_PARAM, URLEncoder.encode(location.getCity(), "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return LOCATION_PARAM;
@@ -50,9 +50,9 @@ public class OrbitzSiteLoaderImpl implements SiteLoader {
     @Override
     public String createAdultsParameter(List<Room> rooms) {
         StringBuilder adults = new StringBuilder();
-        for(Room room: rooms) {
+        for (Room room : rooms) {
             adults.append(room.getAdultsInRoom());
-            if(rooms.indexOf(room) < rooms.size() -1){
+            if (rooms.indexOf(room) < rooms.size() - 1) {
                 adults.append(",");
             }
         }
@@ -64,32 +64,32 @@ public class OrbitzSiteLoaderImpl implements SiteLoader {
     @Override
     public String createChildrenParameter(List<Room> rooms) {
         StringBuilder ages = new StringBuilder();
-        for(Room room: rooms) {
-            for(Integer age: room.getChildrenInRoom()){
+        for (Room room : rooms) {
+            for (Integer age : room.getChildrenInRoom()) {
                 ages.append(rooms.indexOf(room));
                 ages.append("_");
                 ages.append(age);
-                if(room.getChildrenInRoom().indexOf(age) < room.getChildrenInRoom().size() - 1
-                        || rooms.indexOf(room) < rooms.size() -1) {
+                if (room.getChildrenInRoom().indexOf(age) < room.getChildrenInRoom().size() - 1
+                        || rooms.indexOf(room) < rooms.size() - 1) {
                     ages.append(",");
                 }
             }
         }
 
         String CHILDREN_PARAM = "children";
-        return String.format("%s=%s",CHILDREN_PARAM, ages.toString());
+        return String.format("%s=%s", CHILDREN_PARAM, ages.toString());
     }
 
     @Override
     public String createFilterParameter(String[] filterNames) {
         FilterMatcher matcher = new FilterMatcher();
-        List<Filter> filters = matcher.getFiltersByName(filterNames, SiteType.EXPEDIA);
+        List<Filter> filters = matcher.getFiltersByName(filterNames, Site.EXPEDIA);
 
         StringBuilder retVal = new StringBuilder();
-        for(Filter filter: filters){
-            if(retVal.toString().contains(filter.getParameter())){
+        for (Filter filter : filters) {
+            if (retVal.toString().contains(filter.getParameter())) {
                 retVal.append(",");
-            }else{
+            } else {
                 retVal.append("&");
                 retVal.append(filter.getParameter());
                 retVal.append("=");
@@ -109,19 +109,19 @@ public class OrbitzSiteLoaderImpl implements SiteLoader {
                 createCheckInParameter(query.getDates()),
                 createCheckOutParameter(query.getDates()),
                 createRoomsParameter(query.getRooms()),
-                createAdultsParameter(query.getRooms()) ,
+                createAdultsParameter(query.getRooms()),
                 createChildrenParameter(query.getRooms()));
     }
 
     @Override
     public HtmlPage getPage(String url, String[] filters) {
         try {
-            SiteFactory.getClient().getCookieManager().clearCookies();
-            HtmlPage page = SiteFactory.getClient().getPage(url + createFilterParameter(filters));
+            ClientFactory.getClient().getCookieManager().clearCookies();
+            HtmlPage page = ClientFactory.getClient().getPage(url + createFilterParameter(filters));
             Thread.sleep(20000);
 
             return page;
-        }catch (InterruptedException | IOException e) {
+        } catch (InterruptedException | IOException e) {
             e.printStackTrace();
             return null;
         }
@@ -129,7 +129,7 @@ public class OrbitzSiteLoaderImpl implements SiteLoader {
 
     @Override
     public HtmlPage turnPage(SearchQuery query, SearchMarker position) {
-        String queryURL =  createSearchQueryURL(query);
+        String queryURL = createSearchQueryURL(query);
         queryURL += "&pages=" + position.getPageNumber();
         return getPage(queryURL, query.getFilters());
     }

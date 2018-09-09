@@ -10,10 +10,16 @@ import java.util.List;
 public interface SiteScraper {
 
     Results scrapePage(SearchQuery query);
+
     List<HtmlElement> extractHotels(HtmlPage page);
+
     String extractHotelName(HtmlElement element);
+
     String extractHotelLink(HtmlElement element);
+
     Double extractPrice(HtmlElement element);
+
     Double extractCategory(HtmlElement element);
+
     Double extractRating(HtmlElement element);
 }

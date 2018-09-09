@@ -14,6 +14,7 @@ export class MainSearchComponent implements OnInit {
   now: Date;
   years: Number[];
   adults: Number[];
+  msg: string;
 
   searchResults: {
     predictions: any[]
@@ -27,6 +28,7 @@ export class MainSearchComponent implements OnInit {
       predictions: []
     }
 
+    this.msg = null;
     this.now = new Date();
     this.searchQuery = {
       location: "",
@@ -75,9 +77,8 @@ export class MainSearchComponent implements OnInit {
   }
 
   doSearch(){
-    const msg = this.validateSearchParameters();
-    if(msg != null){
-      alert(msg);
+    this.msg = this.validateSearchParameters();
+    if(this.msg != null){
       return;
     }
 
@@ -102,6 +103,8 @@ export class MainSearchComponent implements OnInit {
             children += ",";
           }
         }
+      }else{
+        children += "-1";
       }
 
       if(i < this.searchQuery.rooms.length -1){

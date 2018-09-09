@@ -1,4 +1,9 @@
 <form class="container-fluid">
+  <div class="row" *ngIf="msg !== null">
+    <div class="col-12 alert alert-danger" role="alert">
+        {{msg}}
+    </div>
+  </div>
   <div class="row">
     <div class="col-12 input-group">
       <input class="form-control" type="text" placeholder="Destination..." name="destination" (keyup)="searchLocations()" [(ngModel)]="searchQuery.location" />
@@ -57,7 +62,7 @@
           <hr />
           <div *ngFor="let child of room.childrenInRoom;let j=index">
             <span class="d-flex justify-content-between">
-              <span class="w-100">Child {{j+1}}</span>
+              <span class="w-100">Child {{j+1}} age</span>
               <select class="form-control form-control-sm w-50 mb-1" name="{{getName(i+1,j+1)}}" [(ngModel)]="room.childrenInRoom[j]">
                 <option *ngFor="let year of years" [ngValue]="year">{{year}}</option>
               </select>

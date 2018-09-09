@@ -14,6 +14,7 @@ export class ResultPageComponent implements OnInit {
   filters: any[];
   loading: boolean;
   loadingMore: boolean;
+  msg: string;
 
   constructor(
     private resultService: ResultService,
@@ -27,6 +28,7 @@ export class ResultPageComponent implements OnInit {
     this.filters = [];
     this.loading = true;
     this.loadingMore = false;
+    this.msg = "";
 
     this.resultService.getResults(this.router.url, []).subscribe(
       (data) => {
@@ -55,7 +57,7 @@ export class ResultPageComponent implements OnInit {
       },
       error =>  {
         this.loading = false;
-        alert(error.message);
+        this.msg = error.error;
       }
     )
   }

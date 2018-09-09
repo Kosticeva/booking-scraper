@@ -144,7 +144,7 @@ priceFilters:
     parameter: "data-id"
     value: "pri-1"
     name: "0to75"
-  - localName: "57$-1245$"
+  - localName: "57$-124$"
     site: BOOKING
     parameter: "data-id"
     value: "pri-2"

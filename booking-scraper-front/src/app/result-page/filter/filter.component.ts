@@ -98,12 +98,16 @@ export class FilterComponent implements OnInit {
     for(let i=0; i<this.searchQuery.rooms.length; i++){
       href += this.searchQuery.rooms[i].adultsInRoom;
 
-      for(let j=0; j<this.searchQuery.rooms[i].childrenInRoom.length; j++){
-        children += this.searchQuery.rooms[i].childrenInRoom[j];
+      if(this.searchQuery.rooms[i].childrenInRoom.length > 0){
+        for(let j=0; j<this.searchQuery.rooms[i].childrenInRoom.length; j++){
+          children += this.searchQuery.rooms[i].childrenInRoom[j];
 
-        if(j < this.searchQuery.rooms[i].childrenInRoom.length -1){
-          children += ",";
+          if(j < this.searchQuery.rooms[i].childrenInRoom.length -1){
+            children += ",";
+          }
         }
+      }else{
+        children += "-1";
       }
 
       if(i < this.searchQuery.rooms.length -1){
@@ -158,18 +162,22 @@ export class FilterComponent implements OnInit {
 
       const adultPerRoom = adults.split(',');
       const childrenPerRoom = children.split(';');
+
+      this.searchQuery.location = loc;
+      this.searchQuery.dates.checkInDate = new Date(ciDate);
+      this.searchQuery.dates.checkOutDate = new Date(coDate);
+      this.searchQuery.rooms = [];
+
       if(adultPerRoom.length == rooms && childrenPerRoom.length == rooms) {
-        this.searchQuery.location = loc;
-        this.searchQuery.dates.checkInDate = new Date(ciDate);
-        this.searchQuery.dates.checkOutDate = new Date(coDate);
-        this.searchQuery.rooms = [];
 
         for(let i=0; i<rooms; i++){
           let childrenAges = [];
           if(childrenPerRoom[i] !== ""){
             let ages = childrenPerRoom[i].split(',');
             for(let j=0; j<ages.length; j++){
-              childrenAges.push(Number.parseInt(ages[j]));
+              if(Number.parseInt(ages[j]) > -1){
+                childrenAges.push(Number.parseInt(ages[j]));
+              }
             }
           }
 

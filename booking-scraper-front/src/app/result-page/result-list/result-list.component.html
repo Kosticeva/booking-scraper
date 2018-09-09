@@ -4,8 +4,8 @@
       <h5>Applied filters: </h5>
     </div>
   </div>
-  <div class="row"  *ngIf="filtersAdded.length > 0">
-    <span class="custom-theme-bg p-1 m-1 col-1 rounded" *ngFor="let filter of filtersAdded">{{filter}}</span>
+  <div class="row" *ngIf="filtersAdded.length > 0">
+    <span class="custom-theme-bg p-1 m-1 col rounded" *ngFor="let filter of filtersAdded">{{filter}}</span>
   </div>
 
   <div class="row" *ngFor="let result of results.hotels">

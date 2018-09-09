@@ -10,7 +10,7 @@ import { MainSearchComponent } from './front-page/main-search/main-search.compon
 import { AppRoutingModule } from './app-routing.module';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { LoadingModule } from 'ngx-loading';
+import { LoadingModule, ANIMATION_TYPES } from 'ngx-loading';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatAutocompleteModule, MatInputModule } from '@angular/material';
 
@@ -40,7 +40,11 @@ import { HttpClientModule } from '../../node_modules/@angular/common/http';
     MatInputModule,
     ReactiveFormsModule,
     MatAutocompleteModule,
-    LoadingModule,
+    LoadingModule.forRoot(
+      {
+        animationType: ANIMATION_TYPES.circleSwish
+      }
+    ),
     HttpClientModule
   ],
   providers: [ResultService],

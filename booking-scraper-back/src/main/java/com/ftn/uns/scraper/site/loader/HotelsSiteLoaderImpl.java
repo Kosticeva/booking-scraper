@@ -4,9 +4,9 @@ import com.ftn.uns.scraper.model.filter.Filter;
 import com.ftn.uns.scraper.model.query.*;
 import com.ftn.uns.scraper.model.query.SearchMarker;
 import com.ftn.uns.scraper.service.filter.FilterMatcher;
-import com.ftn.uns.scraper.site.SiteFactory;
+import com.ftn.uns.scraper.site.ClientFactory;
 import com.ftn.uns.scraper.site.SiteLoader;
-import com.ftn.uns.scraper.site.SiteType;
+import com.ftn.uns.scraper.site.Site;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 import java.io.IOException;
@@ -19,9 +19,9 @@ public class HotelsSiteLoaderImpl implements SiteLoader {
     @Override
     public String createLocationParameter(Location location) {
         String LOCATION_PARAM = "q-destination";
-        try{
+        try {
             return String.format("%s=%s", LOCATION_PARAM, URLEncoder.encode(location.getCity(), "UTF-8"));
-        }catch (UnsupportedEncodingException e){
+        } catch (UnsupportedEncodingException e) {
             return null;
         }
     }
@@ -51,9 +51,9 @@ public class HotelsSiteLoaderImpl implements SiteLoader {
         String ADULTS_PARAM = "q-room-";
         StringBuilder retVal = new StringBuilder();
         int roomIdx = 0;
-        for(Room room: rooms){
+        for (Room room : rooms) {
             retVal.append(String.format("%s%d-adults=%d", ADULTS_PARAM, roomIdx, room.getAdultsInRoom()));
-            if(roomIdx < rooms.size()-1){
+            if (roomIdx < rooms.size() - 1) {
                 retVal.append("&");
             }
             roomIdx++;
@@ -67,20 +67,20 @@ public class HotelsSiteLoaderImpl implements SiteLoader {
         String CHILDREN_PARAM = "q-room-";
         StringBuilder retVal = new StringBuilder();
         int roomIdx = 0;
-        for(Room room: rooms){
+        for (Room room : rooms) {
             retVal.append(String.format("%s%d-children=%d&", CHILDREN_PARAM, roomIdx, room.getChildrenInRoom().size()));
 
             int childIdx = 0;
-            for(Integer age: room.getChildrenInRoom()){
+            for (Integer age : room.getChildrenInRoom()) {
                 retVal.append(String.format("%s%d-child-%d-age=%d", CHILDREN_PARAM, roomIdx, childIdx, age));
-                if(childIdx < room.getChildrenInRoom().size()-1) {
+                if (childIdx < room.getChildrenInRoom().size() - 1) {
                     retVal.append("&");
                 }
 
                 childIdx++;
             }
 
-            if(roomIdx < rooms.size()-1){
+            if (roomIdx < rooms.size() - 1) {
                 retVal.append("&");
             }
             roomIdx++;
@@ -92,13 +92,13 @@ public class HotelsSiteLoaderImpl implements SiteLoader {
     @Override
     public String createFilterParameter(String[] filterNames) {
         FilterMatcher matcher = new FilterMatcher();
-        List<Filter> filters = matcher.getFiltersByName(filterNames, SiteType.HOTELS);
+        List<Filter> filters = matcher.getFiltersByName(filterNames, Site.HOTELS);
 
         StringBuilder retVal = new StringBuilder();
-        for(Filter filter: filters){
-            if(retVal.toString().contains(filter.getParameter())){
+        for (Filter filter : filters) {
+            if (retVal.toString().contains(filter.getParameter())) {
                 retVal.append(",");
-            }else{
+            } else {
                 retVal.append("&");
                 retVal.append(filter.getParameter());
                 retVal.append("=");
@@ -117,7 +117,7 @@ public class HotelsSiteLoaderImpl implements SiteLoader {
                 createCheckInParameter(query.getDates()),
                 createCheckOutParameter(query.getDates()),
                 createRoomsParameter(query.getRooms()),
-                createAdultsParameter(query.getRooms()) ,
+                createAdultsParameter(query.getRooms()),
                 createChildrenParameter(query.getRooms()));
 
     }
@@ -125,8 +125,8 @@ public class HotelsSiteLoaderImpl implements SiteLoader {
     @Override
     public HtmlPage getPage(String url, String[] filters) {
         try {
-            SiteFactory.getClient().getCookieManager().clearCookies();
-            HtmlPage page = SiteFactory.getClient().getPage(url+ createFilterParameter(filters));
+            ClientFactory.getClient().getCookieManager().clearCookies();
+            HtmlPage page = ClientFactory.getClient().getPage(url + createFilterParameter(filters));
 
             Thread.sleep(5000);
 

@@ -2,7 +2,7 @@ package com.ftn.uns.scraper.service.filter;
 
 import com.ftn.uns.scraper.model.filter.Filter;
 import com.ftn.uns.scraper.model.filter.Filters;
-import com.ftn.uns.scraper.site.SiteType;
+import com.ftn.uns.scraper.site.Site;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -10,21 +10,21 @@ import java.util.List;
 
 public class FilterMatcher {
 
-    public List<Filter> getFiltersByName(String[] filterNames, SiteType type){
+    public List<Filter> getFiltersByName(String[] filterNames, Site type) {
         List<Filter> siteFilters = new ArrayList<>();
-        try{
-            siteFilters = collectFilters(FilterFactory.getFilters(type));
-        }catch (FileNotFoundException e){
+        try {
+            siteFilters = collectFilters(FilterRepository.getFilters(type));
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
         List<Filter> retVal = new ArrayList<>();
 
-        for(String filterName: filterNames){
+        for (String filterName : filterNames) {
             Filter filter = new Filter();
             filter.setName(filterName);
             filter.setSite(type);
-            if(siteFilters.contains(filter)){
+            if (siteFilters.contains(filter)) {
                 retVal.add(siteFilters.get(siteFilters.indexOf(filter)));
             }
         }
@@ -32,7 +32,7 @@ public class FilterMatcher {
         return retVal;
     }
 
-    private List<Filter> collectFilters(Filters filters){
+    private List<Filter> collectFilters(Filters filters) {
         List<Filter> retVal = new ArrayList<>();
 
         retVal.addAll(filters.getAmenityFilters());
